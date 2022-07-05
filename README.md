@@ -17,5 +17,4 @@ Coming soon:
 3. Run the program using ```./2400``` and enjoy.
 
 # Feedback
-Report bugs here: 
-Suggest new features here: 
+Report bugs, suggest features, and give feedback using this link: 
