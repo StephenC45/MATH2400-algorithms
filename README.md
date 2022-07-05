@@ -7,6 +7,10 @@ Current algorithms include:
 - Euclidean algorithm
 - Extended Euclidean algorithm
 
+Coming soon:
+- Integer base conversion (up to and including base-36)
+- Decimal fraction base conversion (from decimal to another base)
+
 # Instructions
 1. Clone this repository.
 2. Change into the repository and compile all files by typing ```make```.
