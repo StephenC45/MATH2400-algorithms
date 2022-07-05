@@ -15,7 +15,6 @@ Last updated 5 July 2022.
 #include <iostream>
 #include <vector>
 #include <cstdlib>
-#include "debug.h"
 
 
 // Store a pair of x and y values.
@@ -25,6 +24,7 @@ typedef struct xy_pair {
 } xy_pair;
 
 
+#define str std::string
 #define int long long
 #define int_vec std::vector<long long>
 
@@ -92,10 +92,6 @@ void format_print_vector(int_vec v, int width);
 
 // Checks the result from the extended Euclidean algorithm.
 bool check_success(int_vec q, int_vec r, int_vec x, int_vec y, int width);
-
-
-// Debugging function that prints the contents of a vector.
-void print_vector(int_vec v);
 
 
 #endif

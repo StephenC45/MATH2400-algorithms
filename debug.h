@@ -17,6 +17,7 @@ Last updated 5 July 2022.
 #include <cstdlib>
 
 
+#define str std::string
 #define int long long
 #define int_vec std::vector<long long>
 
