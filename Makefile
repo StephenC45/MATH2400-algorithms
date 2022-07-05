@@ -1,30 +1,19 @@
-# Compiles all .c and .cpp files in the current directory.
-# Does not work with programs that use multiple files.
-
-# Adapted from the Makefiles used by various Stack Overflow users.
+# Compiles to produce an executable, 2400, that helps with checking your answers
+# to some types of MATH2400 problems.
 
 #------------------------------------------------------------------------------#
 
-# Executables from C files have no file extension.
-C=gcc
-CWARNFLAGS=-x c -Wall -Wextra -Wshadow
-COTHERFLAGS=-pedantic-errors -g
-CBIN=$(patsubst %.c, %, $(wildcard *.c))
+# Compile settings, with some optimisation for speed.
+# If you want to modify the code, it's best to change these to the following:
+# - WARN_FLAGS: the same as below, add any extra flags you want to use.
+# - OTHER_FLAGS: remove -O3, add -g and any other flags you want to use.
 
-# Executables from C++ files have no file extension.
 CPP=g++
-CPPWARNFLAGS=-x c++ -Wall -Wextra -Weffc++ -Wshadow
-CPPOTHERFLAGS=-pedantic-errors -std=c++17 -g
-CPPBIN=$(patsubst %.cpp, %, $(wildcard *.cpp))
+WARN_FLAGS=-Wall -Wextra -Wshadow
+OTHER_FLAGS=-pedantic-errors -std=c++17 -O3
+SUPPORTING_FILES=debug.cpp euclidean.cpp
 
 #------------------------------------------------------------------------------#
 
-all: $(CPPBIN) $(CBIN)
-
-# C++
-%: %.cpp Makefile
-	$(CPP) $(CPPWARNFLAGS) $(CPPOTHERFLAGS) $< -o $@
-
-# C
-%: %.c Makefile
-	$(C) $(CWARNFLAGS) $(COTHERFLAGS) $< -o $@ -lm
+all: Makefile 2400.cpp $(SUPPORTING_FILES)
+	$(CPP) $(WARN_FLAGS) $(OTHER_FLAGS) $(SUPPORTING_FILES) 2400.cpp -o 2400
