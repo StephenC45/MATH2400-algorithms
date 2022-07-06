@@ -6,10 +6,11 @@ The code in this repository implements various mathematical algorithms and can h
 **Current algorithms include:**
 - Euclidean algorithm
 - Extended Euclidean algorithm
-
-**Coming soon:**
 - Integer base conversion (up to and including base-36)
 - Decimal fraction base conversion (from decimal to another base)
+
+**Coming soon:**
+- Calculating convergends and error bounds from partial quotients
 
 # Instructions (Linux Only)
 1. Clone this repository.
