@@ -2,7 +2,7 @@
 Header file for Euclidean algorithm functions.
 
 Written by Stephen Chuang.
-Last updated 5 July 2022.
+Last updated 6 July 2022.
 */
 
 
@@ -15,12 +15,13 @@ Last updated 5 July 2022.
 #include <iostream>
 #include <vector>
 #include <cstdlib>
+#include "debug.h"
 
 
 // Store a pair of x and y values.
 typedef struct xy_pair {
-    int x;
-    int y;
+    long long x;
+    long long y;
 } xy_pair;
 
 

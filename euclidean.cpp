@@ -2,7 +2,7 @@
 Implementation of Euclidean algorithm functions.
 
 Written by Stephen Chuang.
-Last updated 5 July 2022.
+Last updated 6 July 2022.
 */
 
 
@@ -74,13 +74,13 @@ int do_extended_euclidean(void) {
 }
 
 
-
 // Prints limitations for the Euclidean algorithm.
 void print_limitations_ea(void) {
     std::cout << "Limitations:\n";
 
-    std::cout << "- Maximum recommended inputs of 10^18 to avoid integer ";
-    std::cout << "overflow.\n\n";
+    std::cout << "- Maximum input should be around 9 * 10^18 to avoid integer ";
+    std::cout << "overflow.\n";
+    std::cout << "- No protection from integer overflow.\n";
 
     return;
 }
@@ -130,7 +130,6 @@ int euclidean(int a, int b, int output_width) {
     }
 
     std::cout << "\nNumber of iterations: " << iteration_count << '\n';
-
     return b;
 }
 
