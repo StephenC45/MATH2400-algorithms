@@ -50,6 +50,9 @@ void print_welcome(void) {
     std::cout << "Welcome.\n\nReport errors, suggest features, or give ";
     std::cout << "using the form here: " << FEEDBACK_LINK << "\n\n";
 
+    std::cout << "Be sure to pull from the repository regularly to get the ";
+    std::cout << "latest features, bug fixes, and efficiency improvements.\n\n";
+
     // Print the menu of options.
     std::cout << "Enter an option below:\n\n";
 
