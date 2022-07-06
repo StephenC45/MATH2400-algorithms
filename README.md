@@ -10,7 +10,8 @@ The code in this repository implements various mathematical algorithms and can h
 - Decimal fraction base conversion (from decimal to another base)
 
 **Coming soon:**
-- Calculating convergends and error bounds from partial quotients
+- Calculating convergents and error bounds from partial quotients
+- Efficiency improvements to decimal fraction base conversion
 
 # Instructions (Linux Only)
 1. Clone this repository.
