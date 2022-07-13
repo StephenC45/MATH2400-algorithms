@@ -2,7 +2,7 @@
 Header file for base conversion functions.
 
 Written by Stephen Chuang.
-Last updated 6 July 2022.
+Last updated 14 July 2022.
 */
 
 
@@ -30,7 +30,7 @@ typedef struct range_pair {
 #define MAX_LENGTH 12
 #define MAX_BASE 36
 #define MAX_INT 1000000000   // 10^9
-#define MAX_ITERATIONS 25000 // You may change this. Currently O(n^2).
+#define MAX_ITERATIONS 2500000 // You may change this. Currently O(n^2).
 
 #define BLUE  "\033[36m"
 #define RED   "\033[31m"
@@ -90,8 +90,14 @@ void take_input_frac(int &num, int &den, int &base);
 range_pair frac_convert(int_vec &num, int_vec &den, int_vec &ints, int base);
 
 
-// Finds if there are any repeats of the first numerator and first denominator.
-range_pair find_repeat(int_vec num, int_vec den);
+// Finds if there are any repeats of the first numerator using the tortoise and
+// hare algorithm.
+range_pair find_repeat(int_vec num);
+
+
+// Finds the earliest repeat in a sequence and returns the indices of the
+// start and end.
+range_pair subsequence_repeat(int_vec sequence, size_t start, size_t end);
 
 
 // Prints the integer parts obtained from the fractional base conversion

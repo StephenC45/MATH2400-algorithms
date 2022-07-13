@@ -2,7 +2,7 @@
 Implementation of base conversion functions.
 
 Written by Stephen Chuang.
-Last updated 6 July 2022.
+Last updated 14 July 2022.
 */
 
 
@@ -92,7 +92,7 @@ void print_limitations_frac(void) {
     std::cout << "- Time complexity O(n^2) so choose MAX_ITERATIONS (";
     std::cout << "configurable in base_conversion.h) carefully.\n- This prog";
     std::cout << "ram may be reduced to O(n * log(n)) time complexity later.\n";
-    std::cout << "- This program may not always produce the simplest possible ";
+    std::cout << "- This program rarely produces the simplest possible ";
     std::cout << "period.\n";
     std::cout << "- Does not tolerate fractions larger than or equal to 1.\n";
     std::cout << "- No protections from integer overflow.\n\n";
@@ -304,15 +304,15 @@ range_pair frac_convert(int_vec &num, int_vec &den, int_vec &ints, int base) {
     while (num.size() < MAX_ITERATIONS && num[num.size() - 1]) {
         product = num[num.size() - 1] * base;
         new_numer = product % den[den.size() - 1];
-        new_denom = den[den.size() - 1];
+        new_denom = den[den.size() - 1]; // Same as previous denominator.
         int new_integer_part = product / new_denom;
 
         num.push_back(new_numer);
-        den.push_back(new_denom);
+        den.push_back(new_denom); // Same as previous denominator.
         ints.push_back(new_integer_part);
     }
 
-    result = find_repeat(num, den);
+    result = find_repeat(num);
     if (result.range_start != -1 && result.range_end != -1) {
         std::cout << "\nThis base conversion is periodic. The periodic ";
         std::cout << "part will be highlighted in " << BLUE << "blue";
@@ -325,35 +325,68 @@ range_pair frac_convert(int_vec &num, int_vec &den, int_vec &ints, int base) {
 }
 
 
-// Finds if there are any repeats of the first numerator and first denominator.
-range_pair find_repeat(int_vec num, int_vec den) {
-    // Check that the vectors storing numerators and denominators are same size.
-    assert(num.size() == den.size());
-    
-    // To store the return value.
+// Finds if there are any repeats of the first numerator.
+range_pair find_repeat(int_vec num) {    
+    // A range_pair store the return value.
     range_pair return_val;
     
-    // The numerator and denominator to search for.
-    size_t test_index = 0;
-    while (test_index < num.size()) {
-        // Search through the numerators and denominators to find a match.
-        size_t index = test_index + 1;
-        while (index < num.size()) {
-            if (num[index] == num[test_index] && den[index] == den[test_index]) {
-                return_val.range_start = test_index;
-                return_val.range_end = index;
-                return return_val;
-            }
-            ++index;
+    // Two pointers.
+    size_t tortoise_index = 0;
+    size_t hare_index = 1;
+    while (tortoise_index < num.size()
+    && num[tortoise_index] != num[hare_index]) {
+        // Increment tortoise by 1, hare by 2. If hare goes beyond end of the
+        // vector, make it return to the start.
+        ++tortoise_index;
+        hare_index += 2;
+        if (hare_index >= num.size()) {
+            hare_index %= num.size();
         }
+    }
 
+    // Tortoise and hare algorithm has finished.
+    if (tortoise_index == num.size()) {
+        // No match found.
+        return_val.range_start = -1;
+        return_val.range_end = -1;
+        return return_val;
+    } else {
+        // Repeat found.
+        return_val = subsequence_repeat(num, tortoise_index, hare_index);
+    }
+
+    return return_val;
+}
+
+
+// Finds the earliest repeat in a sequence and returns the indices of the
+// start and end.
+range_pair subsequence_repeat(int_vec sequence, size_t start, size_t end) {
+    // Store the return value. Initialised later.
+    range_pair result;
+
+    // Copy the original sequence into a new one.
+    int_vec subsequence;
+    subsequence.reserve(end - start + 1);
+    for (size_t index = start; index <= end; ++index) {
+        subsequence.push_back(sequence[index]);
+    }
+
+    // Find the first instance where the start element is repeated.
+    size_t test_index = 1;
+    while (test_index < subsequence.size()) {
+        if (subsequence[test_index] == subsequence[0]) {
+            result.range_start = start;
+            result.range_end = start + test_index;
+            return result;
+        }
         ++test_index;
     }
 
-    // No match found.
-    return_val.range_start = -1;
-    return_val.range_end = -1;
-    return return_val;
+    // No repeat found.
+    result.range_start = -1;
+    result.range_end = -1;
+    return result;
 }
 
 
@@ -377,6 +410,13 @@ void print_result(int_vec int_parts, bool periodic, int start, int end) {
         for (int value : int_parts) {
             std::cout << value;
         }
+    }
+
+    if (int_parts.size() == MAX_ITERATIONS) {
+        // The algorithm was stopped due to reaching maximum number of 
+        // iterations.
+        std::cout << "\n\nAfter " << MAX_ITERATIONS << " iterations, it is ";
+        std::cout << "still unknown whether this terminates or is endless.";
     }
 
     std::cout << "\n\n";
