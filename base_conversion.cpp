@@ -296,57 +296,64 @@ void take_input_frac(int &num, int &den, int &base) {
 // Performs the base conversion algorithm on fractional parts.
 range_pair frac_convert(int_vec &num, int_vec &den, int_vec &ints, int base) {
     range_pair result;
+    int product;
+    int new_numer;
+    int new_denom;
     
     // MAX_ITERATIONS prevents infinite looping.
     while (num.size() < MAX_ITERATIONS && num[num.size() - 1]) {
-        int product = num[num.size() - 1] * base;
-        int new_numerator = product % den[den.size() - 1];
-        int new_denominator = den[den.size() - 1];
-        int new_integer_part = product / new_denominator;
+        product = num[num.size() - 1] * base;
+        new_numer = product % den[den.size() - 1];
+        new_denom = den[den.size() - 1];
+        int new_integer_part = product / new_denom;
 
-        num.push_back(new_numerator);
-        den.push_back(new_denominator);
+        num.push_back(new_numer);
+        den.push_back(new_denom);
         ints.push_back(new_integer_part);
-
-        int repeat_index = is_repeat(new_numerator, new_denominator, num, den);
-        if (repeat_index >= 0) {
-            std::cout << "\nThis base conversion is periodic. The periodic ";
-            std::cout << "part will be highlighted in " << BLUE << "blue";
-            std::cout << RESET << ".\n";
-            result.range_start = repeat_index;
-            result.range_end = ints.size() - 1;
-            return result;
-        }
     }
 
-    if (num.size() == MAX_ITERATIONS) {
-        std::cout << RED << "\nTerminated prematurely after " << MAX_ITERATIONS;
-        std::cout << " iterations.\n" << RESET;
+    result = find_repeat(num, den);
+    if (result.range_start != -1 && result.range_end != -1) {
+        std::cout << "\nThis base conversion is periodic. The periodic ";
+        std::cout << "part will be highlighted in " << BLUE << "blue";
+        std::cout << RESET << ".\n";
     } else {
-        std::cout << "\nThis base conversion is terminating.\n";
+        std::cout << "\nThis base conversion may be terminating or endless.\n";
     }
 
-    result.range_start = -1;
-    result.range_end = -1;
     return result;
 }
 
 
-// Checks if a numerator-denominator pair has appeared before. Returns true if
-// they are found, or false otherwise.
-int is_repeat(int test_num, int test_den, int_vec num, int_vec den) {
-    // Check that numerators and denominators are both same size.
+// Finds if there are any repeats of the first numerator and first denominator.
+range_pair find_repeat(int_vec num, int_vec den) {
+    // Check that the vectors storing numerators and denominators are same size.
     assert(num.size() == den.size());
-
-    // Search for a match and return true if a match is found.
-    for (size_t index = 0; index < num.size() - 1; ++index) {
-        if (num[index] == test_num && den[index] == test_den) {
-            return index;
+    
+    // To store the return value.
+    range_pair return_val;
+    
+    // The numerator and denominator to search for.
+    size_t test_index = 0;
+    while (test_index < num.size()) {
+        // Search through the numerators and denominators to find a match.
+        size_t index = test_index + 1;
+        while (index < num.size()) {
+            if (num[index] == num[test_index] && den[index] == den[test_index]) {
+                return_val.range_start = test_index;
+                return_val.range_end = index;
+                return return_val;
+            }
+            ++index;
         }
+
+        ++test_index;
     }
 
     // No match found.
-    return -1;
+    return_val.range_start = -1;
+    return_val.range_end = -1;
+    return return_val;
 }
 
 
@@ -370,13 +377,6 @@ void print_result(int_vec int_parts, bool periodic, int start, int end) {
         for (int value : int_parts) {
             std::cout << value;
         }
-    }
-
-    // Print error message if the program had to stop at MAX_ITERATIONS.
-    if (int_parts.size() == MAX_ITERATIONS) {
-        std::cerr << "\n\n" << RED << "Terminated prematurely after ";
-        std::cerr << MAX_ITERATIONS << " iterations.\n\n" << RESET;
-        return;
     }
 
     std::cout << "\n\n";

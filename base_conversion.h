@@ -90,9 +90,8 @@ void take_input_frac(int &num, int &den, int &base);
 range_pair frac_convert(int_vec &num, int_vec &den, int_vec &ints, int base);
 
 
-// Checks if a numerator-denominator pair has appeared before. Returns -1 if no
-// match found, or returns the index where the match was found.
-int is_repeat(int test_num, int test_den, int_vec num, int_vec den);
+// Finds if there are any repeats of the first numerator and first denominator.
+range_pair find_repeat(int_vec num, int_vec den);
 
 
 // Prints the integer parts obtained from the fractional base conversion
