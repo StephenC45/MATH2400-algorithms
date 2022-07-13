@@ -89,11 +89,9 @@ void print_limitations_int(void) {
 void print_limitations_frac(void) {
     std::cout << "Limitations:\n";
     
-    std::cout << "- Time complexity O(n^2) so choose MAX_ITERATIONS (";
-    std::cout << "configurable in base_conversion.h) carefully.\n- This prog";
-    std::cout << "ram may be reduced to O(n * log(n)) time complexity later.\n";
     std::cout << "- This program rarely produces the simplest possible ";
-    std::cout << "period.\n";
+    std::cout << "period.\n- Do your own checking by writing out the periodic ";
+    std::cout << "part a few times to find the simplest possible period.\n";
     std::cout << "- Does not tolerate fractions larger than or equal to 1.\n";
     std::cout << "- No protections from integer overflow.\n\n";
     return;
@@ -412,7 +410,7 @@ void print_result(int_vec int_parts, bool periodic, int start, int end) {
         }
     }
 
-    if (int_parts.size() == MAX_ITERATIONS) {
+    if (!periodic) {
         // The algorithm was stopped due to reaching maximum number of 
         // iterations.
         std::cout << "\n\nAfter " << MAX_ITERATIONS << " iterations, it is ";
