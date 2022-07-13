@@ -11,7 +11,7 @@ The code in this repository implements various mathematical algorithms and can h
 
 **Coming soon:**
 - Calculating convergents and error bounds from partial quotients
-- Efficiency improvements to decimal fraction base conversion
+- Sieve of Eratosthenes
 
 # Instructions (Linux Only)
 1. Clone this repository.
