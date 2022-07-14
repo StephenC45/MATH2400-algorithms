@@ -428,7 +428,7 @@ void print_result(int_vec int_parts, bool periodic, int start, int end) {
     if (!periodic && int_parts.size() == MAX_ITERATIONS) {
         // The algorithm was stopped due to reaching maximum number of 
         // iterations.
-        std::cerr << RED << "\n\nTerminated prematurely after ";
+        std::cerr << "\n\n" << RED << "Terminated prematurely after ";
         std::cerr << MAX_ITERATIONS << " iterations.\n" << RESET;
     } else {
         std::cout << "\n";
