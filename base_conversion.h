@@ -2,7 +2,7 @@
 Header file for base conversion functions.
 
 Written by Stephen Chuang.
-Last updated 6 July 2022.
+Last updated 14 July 2022.
 */
 
 
@@ -29,8 +29,9 @@ typedef struct range_pair {
 
 #define MAX_LENGTH 12
 #define MAX_BASE 36
-#define MAX_INT 1000000000   // 10^9
-#define MAX_ITERATIONS 25000 // You may change this. Currently O(n^2).
+#define MAX_INT 1000000000     // 10^9
+#define MAX_ITERATIONS 2500000 // You may change this. O(n).
+#define OLD_MAX_ITER 25000     // You may change this. O(n^2).
 
 #define BLUE  "\033[36m"
 #define RED   "\033[31m"
@@ -90,14 +91,32 @@ void take_input_frac(int &num, int &den, int &base);
 range_pair frac_convert(int_vec &num, int_vec &den, int_vec &ints, int base);
 
 
-// Checks if a numerator-denominator pair has appeared before. Returns -1 if no
-// match found, or returns the index where the match was found.
-int is_repeat(int test_num, int test_den, int_vec num, int_vec den);
+// The old version of the fractional base conversion algorithm.
+range_pair old_f_convert(int_vec &num, int_vec &den, int_vec &ints, int base);
+
+
+// Finds if there are any repeats of the first numerator using the tortoise and
+// hare algorithm.
+range_pair find_repeat(int_vec num);
+
+
+// From the old version. Checks if a numerator-denominator pair has appeared 
+// before. Returns true if they are found, or false otherwise.
+int old_is_repeat(int test_num, int test_den, int_vec num, int_vec den);
+
+
+// Finds the earliest repeat in a sequence and returns the indices of the
+// start and end.
+range_pair subsequence_repeat(int_vec sequence, size_t start, size_t end);
 
 
 // Prints the integer parts obtained from the fractional base conversion
 // algorithm.
 void print_result(int_vec int_parts, bool periodic, int start, int end);
+
+
+// Prints the result if periodic.
+void print_periodic(int_vec int_parts, int start, int end);
 
 
 #endif

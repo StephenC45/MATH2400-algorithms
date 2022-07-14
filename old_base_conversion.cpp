@@ -1,9 +1,8 @@
 /*
 Implementation of base conversion functions.
 
-This is the newer version where decimal fraction base conversion is fast enough
-to perform 2.5 million iterations (instead of the old 25,000) but almost never
-produces a result with the simplest possible period.
+This is the older version where decimal fraction base conversion is slower but
+produces results that are closer to the simplest possible period.
 
 Written by Stephen Chuang.
 Last updated 14 July 2022.
@@ -53,9 +52,9 @@ int do_fraction_base_conversion(void) {
     int_vec numerators;
     int_vec denominators;
     int_vec integer_parts;
-    numerators.reserve(MAX_ITERATIONS);
-    denominators.reserve(MAX_ITERATIONS);
-    integer_parts.reserve(MAX_ITERATIONS);
+    numerators.reserve(OLD_MAX_ITER);
+    denominators.reserve(OLD_MAX_ITER);
+    integer_parts.reserve(OLD_MAX_ITER);
 
     // Perform first iteration.
     int product = numerator * new_base;
@@ -93,9 +92,11 @@ void print_limitations_int(void) {
 void print_limitations_frac(void) {
     std::cout << "Limitations:\n";
     
-    std::cout << "- This program rarely produces the simplest possible ";
-    std::cout << "period.\n- Do your own checking by writing out the periodic ";
-    std::cout << "part a few times to find the simplest possible period.\n";
+    std::cout << "- Time complexity O(n^2) so choose OLD_MAX_ITER (";
+    std::cout << "configurable in base_conversion.h) carefully.\n- This prog";
+    std::cout << "ram may be reduced to O(n * log(n)) time complexity later.\n";
+    std::cout << "- This program may not always produce the simplest possible ";
+    std::cout << "period.\n";
     std::cout << "- Does not tolerate fractions larger than or equal to 1.\n";
     std::cout << "- No protections from integer overflow.\n\n";
     return;
@@ -264,7 +265,7 @@ str digits_to_str(int_vec in_v, int new_base) {
 
 // Reads and validates user input for the fraction base conversion algorithm.
 void take_input_frac(int &num, int &den, int &base) {
-    std::cout << "This program terminates after " << MAX_ITERATIONS;
+    std::cout << "This program terminates after " << OLD_MAX_ITER;
     std::cout << " iterations.\n\n";
     
     // Read the numerator.
@@ -298,142 +299,88 @@ void take_input_frac(int &num, int &den, int &base) {
 // Performs the base conversion algorithm on fractional parts.
 range_pair frac_convert(int_vec &num, int_vec &den, int_vec &ints, int base) {
     range_pair result;
-    int product;
-    int new_numer;
-    int new_denom;
     
-    // MAX_ITERATIONS prevents infinite looping.
-    while (num.size() < MAX_ITERATIONS && num[num.size() - 1]) {
-        product = num[num.size() - 1] * base;
-        new_numer = product % den[den.size() - 1];
-        new_denom = den[den.size() - 1]; // Same as previous denominator.
+    // OLD_MAX_ITER prevents infinite looping.
+    while (num.size() < OLD_MAX_ITER && num[num.size() - 1]) {
+        int product = num[num.size() - 1] * base;
+        int new_numer = product % den[den.size() - 1];
+        int new_denom = den[den.size() - 1];
         int new_integer_part = product / new_denom;
 
         num.push_back(new_numer);
-        den.push_back(new_denom); // Same as previous denominator.
+        den.push_back(new_denom);
         ints.push_back(new_integer_part);
+
+        int repeat_index = old_is_repeat(new_numer, new_denom, num, den);
+        if (repeat_index >= 0) {
+            std::cout << "\nThis base conversion is periodic. The periodic ";
+            std::cout << "part will be highlighted in " << BLUE << "blue";
+            std::cout << RESET << ".\n";
+            result.range_start = repeat_index;
+            result.range_end = ints.size() - 1;
+            return result;
+        }
     }
 
-    result = find_repeat(num);
-    if (result.range_start != -1 && result.range_end != -1) {
-        std::cout << "\nThis base conversion is periodic. The periodic ";
-        std::cout << "part will be highlighted in " << BLUE << "blue";
-        std::cout << RESET << ".\n";
-    } else if (num.size() < MAX_ITERATIONS) {
+    if (num.size() == OLD_MAX_ITER) {
+        std::cout << RED << "\nTerminated prematurely after " << OLD_MAX_ITER;
+        std::cout << " iterations.\n" << RESET;
+    } else {
         std::cout << "\nThis base conversion is terminating.\n";
     }
 
-    return result;
-}
-
-
-// Finds if there are any repeats of the first numerator.
-range_pair find_repeat(int_vec num) {    
-    // A range_pair store the return value.
-    range_pair return_val;
-    
-    // Two pointers.
-    size_t tortoise_index = 0;
-    size_t hare_index = 1;
-    while (tortoise_index < num.size()
-    && num[tortoise_index] != num[hare_index]) {
-        // Increment tortoise by 1, hare by 2. If hare goes beyond end of the
-        // vector, make it return to the start.
-        ++tortoise_index;
-        hare_index += 2;
-        if (hare_index >= num.size()) {
-            hare_index %= num.size();
-        }
-    }
-
-    // Tortoise and hare algorithm has finished.
-    if (tortoise_index == num.size()) {
-        // No match found.
-        return_val.range_start = -1;
-        return_val.range_end = -1;
-        return return_val;
-    } else {
-        // Repeat found.
-        return_val = subsequence_repeat(num, tortoise_index, hare_index);
-    }
-    return return_val;
-}
-
-
-// Finds the earliest repeat in a sequence and returns the indices of the
-// start and end.
-range_pair subsequence_repeat(int_vec sequence, size_t start, size_t end) {
-    // Store the return value. Initialised later.
-    range_pair result;
-
-    // Copy the original sequence into a new one.
-    int_vec subsequence;
-    subsequence.reserve(end - start + 1);
-    for (size_t index = start; index <= end; ++index) {
-        subsequence.push_back(sequence[index]);
-    }
-
-    // Find the first instance where the start element is repeated.
-    size_t test_index = 1;
-    while (test_index < subsequence.size()) {
-        if (subsequence[test_index] == subsequence[0]) {
-            result.range_start = start;
-            result.range_end = start + test_index;
-            return result;
-        }
-        ++test_index;
-    }
-
-    // No repeat found.
     result.range_start = -1;
     result.range_end = -1;
     return result;
 }
 
 
+// Checks if a numerator-denominator pair has appeared before. Returns true if
+// they are found, or false otherwise.
+int old_is_repeat(int test_num, int test_den, int_vec num, int_vec den) {
+    // Check that numerators and denominators are both same size.
+    assert(num.size() == den.size());
+
+    // Search for a match and return true if a match is found.
+    for (size_t index = 0; index < num.size() - 1; ++index) {
+        if (num[index] == test_num && den[index] == test_den) {
+            return index;
+        }
+    }
+
+    // No match found.
+    return -1;
+}
+
+
 // Prints the integer parts obtained from the fractional base conversion
 // algorithm.
 void print_result(int_vec int_parts, bool periodic, int start, int end) {  
-    if (!periodic && int_parts.size() == MAX_ITERATIONS) {
-        // The algorithm was stopped due to reaching maximum number of 
-        // iterations.
-        std::cout << RED << "\n\nTerminated prematurely after ";
-        std::cout << MAX_ITERATIONS << " iterations.\n" << RESET;
-    }
-    
     if (periodic) {
-        print_periodic(int_parts, start, end);
+        // Print the non-periodic part.
+        for (int index = 0; index <= start; ++index) {
+            std::cout << int_parts[index];
+        }
+
+        // Print the periodic part in blue.
+        std::cout << BLUE;
+        for (int index = start + 1; index <= end; ++index) {
+            std::cout << int_parts[index];
+        }
+        
+        std::cout << RESET;
     } else {
         for (int value : int_parts) {
             std::cout << value;
         }
     }
 
-    if (!periodic && int_parts.size() == MAX_ITERATIONS) {
-        // The algorithm was stopped due to reaching maximum number of 
-        // iterations.
-        std::cerr << RED << "\n\nTerminated prematurely after ";
-        std::cerr << MAX_ITERATIONS << " iterations.\n" << RESET;
-    } else {
-        std::cout << "\n";
+    // Print error message if the program had to stop at OLD_MAX_ITER.
+    if (int_parts.size() == OLD_MAX_ITER) {
+        std::cerr << "\n\n" << RED << "Terminated prematurely after ";
+        std::cerr << OLD_MAX_ITER << " iterations.\n\n" << RESET;
+        return;
     }
 
-    std::cout << "\n";
-    return;
-}
-
-
-// Prints the result if periodic.
-void print_periodic(int_vec int_parts, int start, int end) {
-    // Print the non-periodic part in default colour.
-    for (int index = 0; index <= start; ++index) {
-        std::cout << int_parts[index];
-    }
-
-    // Print the periodic part in blue.
-    std::cout << BLUE;
-    for (int index = start + 1; index <= end; ++index) {
-        std::cout << int_parts[index];
-    }
-    std::cout << RESET;
+    std::cout << "\n\n";
 }
