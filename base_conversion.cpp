@@ -1,6 +1,10 @@
 /*
 Implementation of base conversion functions.
 
+This is the newer version where decimal fraction base conversion is fast enough
+to perform 2.5 million iterations (instead of the old 25,000) but almost never
+produces a result with the simplest possible period.
+
 Written by Stephen Chuang.
 Last updated 14 July 2022.
 */

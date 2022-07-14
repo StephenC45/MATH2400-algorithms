@@ -1,8 +1,11 @@
 /*
 Implementation of base conversion functions.
 
+This is the older version where decimal fraction base conversion is slower but
+produces results that are closer to the simplest possible period.
+
 Written by Stephen Chuang.
-Last updated 6 July 2022.
+Last updated 14 July 2022.
 */
 
 
