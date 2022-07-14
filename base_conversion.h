@@ -90,9 +90,18 @@ void take_input_frac(int &num, int &den, int &base);
 range_pair frac_convert(int_vec &num, int_vec &den, int_vec &ints, int base);
 
 
+// The old version of the fractional base conversion algorithm.
+range_pair old_f_convert(int_vec &num, int_vec &den, int_vec &ints, int base);
+
+
 // Finds if there are any repeats of the first numerator using the tortoise and
 // hare algorithm.
 range_pair find_repeat(int_vec num);
+
+
+// From the old version. Checks if a numerator-denominator pair has appeared 
+// before. Returns true if they are found, or false otherwise.
+int old_is_repeat(int test_num, int test_den, int_vec num, int_vec den);
 
 
 // Finds the earliest repeat in a sequence and returns the indices of the
@@ -103,6 +112,10 @@ range_pair subsequence_repeat(int_vec sequence, size_t start, size_t end);
 // Prints the integer parts obtained from the fractional base conversion
 // algorithm.
 void print_result(int_vec int_parts, bool periodic, int start, int end);
+
+
+// Prints the result if periodic.
+void print_periodic(int_vec int_parts, int start, int end);
 
 
 #endif

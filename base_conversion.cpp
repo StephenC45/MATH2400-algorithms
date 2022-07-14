@@ -315,8 +315,8 @@ range_pair frac_convert(int_vec &num, int_vec &den, int_vec &ints, int base) {
         std::cout << "\nThis base conversion is periodic. The periodic ";
         std::cout << "part will be highlighted in " << BLUE << "blue";
         std::cout << RESET << ".\n";
-    } else {
-        std::cout << "\nThis base conversion may be terminating or endless.\n";
+    } else if (num.size() < MAX_ITERATIONS) {
+        std::cout << "\nThis base conversion is terminating.\n";
     }
 
     return result;
@@ -352,7 +352,6 @@ range_pair find_repeat(int_vec num) {
         // Repeat found.
         return_val = subsequence_repeat(num, tortoise_index, hare_index);
     }
-
     return return_val;
 }
 
@@ -391,31 +390,46 @@ range_pair subsequence_repeat(int_vec sequence, size_t start, size_t end) {
 // Prints the integer parts obtained from the fractional base conversion
 // algorithm.
 void print_result(int_vec int_parts, bool periodic, int start, int end) {  
+    if (!periodic && int_parts.size() == MAX_ITERATIONS) {
+        // The algorithm was stopped due to reaching maximum number of 
+        // iterations.
+        std::cout << RED << "\n\nTerminated prematurely after ";
+        std::cout << MAX_ITERATIONS << " iterations.\n" << RESET;
+    }
+    
     if (periodic) {
-        // Print the non-periodic part.
-        for (int index = 0; index <= start; ++index) {
-            std::cout << int_parts[index];
-        }
-
-        // Print the periodic part in blue.
-        std::cout << BLUE;
-        for (int index = start + 1; index <= end; ++index) {
-            std::cout << int_parts[index];
-        }
-        
-        std::cout << RESET;
+        print_periodic(int_parts, start, end);
     } else {
         for (int value : int_parts) {
             std::cout << value;
         }
     }
 
-    if (!periodic) {
+    if (!periodic && int_parts.size() == MAX_ITERATIONS) {
         // The algorithm was stopped due to reaching maximum number of 
         // iterations.
-        std::cout << "\n\nAfter " << MAX_ITERATIONS << " iterations, it is ";
-        std::cout << "still unknown whether this terminates or is endless.";
+        std::cerr << RED << "\n\nTerminated prematurely after ";
+        std::cerr << MAX_ITERATIONS << " iterations.\n" << RESET;
+    } else {
+        std::cout << "\n";
     }
 
-    std::cout << "\n\n";
+    std::cout << "\n";
+    return;
+}
+
+
+// Prints the result if periodic.
+void print_periodic(int_vec int_parts, int start, int end) {
+    // Print the non-periodic part in default colour.
+    for (int index = 0; index <= start; ++index) {
+        std::cout << int_parts[index];
+    }
+
+    // Print the periodic part in blue.
+    std::cout << BLUE;
+    for (int index = start + 1; index <= end; ++index) {
+        std::cout << int_parts[index];
+    }
+    std::cout << RESET;
 }
