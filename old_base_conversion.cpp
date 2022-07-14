@@ -52,9 +52,9 @@ int do_fraction_base_conversion(void) {
     int_vec numerators;
     int_vec denominators;
     int_vec integer_parts;
-    numerators.reserve(MAX_ITERATIONS);
-    denominators.reserve(MAX_ITERATIONS);
-    integer_parts.reserve(MAX_ITERATIONS);
+    numerators.reserve(OLD_MAX_ITER);
+    denominators.reserve(OLD_MAX_ITER);
+    integer_parts.reserve(OLD_MAX_ITER);
 
     // Perform first iteration.
     int product = numerator * new_base;
@@ -92,7 +92,7 @@ void print_limitations_int(void) {
 void print_limitations_frac(void) {
     std::cout << "Limitations:\n";
     
-    std::cout << "- Time complexity O(n^2) so choose MAX_ITERATIONS (";
+    std::cout << "- Time complexity O(n^2) so choose OLD_MAX_ITER (";
     std::cout << "configurable in base_conversion.h) carefully.\n- This prog";
     std::cout << "ram may be reduced to O(n * log(n)) time complexity later.\n";
     std::cout << "- This program may not always produce the simplest possible ";
@@ -265,7 +265,7 @@ str digits_to_str(int_vec in_v, int new_base) {
 
 // Reads and validates user input for the fraction base conversion algorithm.
 void take_input_frac(int &num, int &den, int &base) {
-    std::cout << "This program terminates after " << MAX_ITERATIONS;
+    std::cout << "This program terminates after " << OLD_MAX_ITER;
     std::cout << " iterations.\n\n";
     
     // Read the numerator.
@@ -300,8 +300,8 @@ void take_input_frac(int &num, int &den, int &base) {
 range_pair frac_convert(int_vec &num, int_vec &den, int_vec &ints, int base) {
     range_pair result;
     
-    // MAX_ITERATIONS prevents infinite looping.
-    while (num.size() < MAX_ITERATIONS && num[num.size() - 1]) {
+    // OLD_MAX_ITER prevents infinite looping.
+    while (num.size() < OLD_MAX_ITER && num[num.size() - 1]) {
         int product = num[num.size() - 1] * base;
         int new_numer = product % den[den.size() - 1];
         int new_denom = den[den.size() - 1];
@@ -322,8 +322,8 @@ range_pair frac_convert(int_vec &num, int_vec &den, int_vec &ints, int base) {
         }
     }
 
-    if (num.size() == MAX_ITERATIONS) {
-        std::cout << RED << "\nTerminated prematurely after " << MAX_ITERATIONS;
+    if (num.size() == OLD_MAX_ITER) {
+        std::cout << RED << "\nTerminated prematurely after " << OLD_MAX_ITER;
         std::cout << " iterations.\n" << RESET;
     } else {
         std::cout << "\nThis base conversion is terminating.\n";
@@ -375,10 +375,10 @@ void print_result(int_vec int_parts, bool periodic, int start, int end) {
         }
     }
 
-    // Print error message if the program had to stop at MAX_ITERATIONS.
-    if (int_parts.size() == MAX_ITERATIONS) {
+    // Print error message if the program had to stop at OLD_MAX_ITER.
+    if (int_parts.size() == OLD_MAX_ITER) {
         std::cerr << "\n\n" << RED << "Terminated prematurely after ";
-        std::cerr << MAX_ITERATIONS << " iterations.\n\n" << RESET;
+        std::cerr << OLD_MAX_ITER << " iterations.\n\n" << RESET;
         return;
     }
 

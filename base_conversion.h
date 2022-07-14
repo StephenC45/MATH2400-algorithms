@@ -29,8 +29,9 @@ typedef struct range_pair {
 
 #define MAX_LENGTH 12
 #define MAX_BASE 36
-#define MAX_INT 1000000000   // 10^9
-#define MAX_ITERATIONS 2500000 // You may change this. Currently O(n^2).
+#define MAX_INT 1000000000     // 10^9
+#define MAX_ITERATIONS 2500000 // You may change this. O(n).
+#define OLD_MAX_ITER 25000     // You may change this. O(n^2).
 
 #define BLUE  "\033[36m"
 #define RED   "\033[31m"
