@@ -71,6 +71,10 @@ int do_fraction_base_conversion(void) {
     }
 
     // Print the result.
+    if (!periodic && integer_parts.size() == MAX_ITERATIONS) {
+        std::cout << RED << "\n\nTerminated prematurely after ";
+        std::cout << MAX_ITERATIONS << " iterations.\n" << RESET;
+    }
     std::cout << "\n" << numerator << " / " << denominator << " in base-";
     std::cout << new_base << ": 0.";
     print_result(integer_parts, periodic, range.range_start, range.range_end);
@@ -316,6 +320,7 @@ range_pair frac_convert(int_vec &num, int_vec &den, int_vec &ints, int base) {
 
     result = find_repeat(num);
     if (result.range_start != -1 && result.range_end != -1) {
+        std::cout << result.range_start << " to " << result.range_end << "\n";
         std::cout << "\nThis base conversion is periodic. The periodic ";
         std::cout << "part will be highlighted in " << BLUE << "blue";
         std::cout << RESET << ".\n";
@@ -331,10 +336,10 @@ range_pair frac_convert(int_vec &num, int_vec &den, int_vec &ints, int base) {
 range_pair find_repeat(int_vec num) {    
     // A range_pair store the return value.
     range_pair return_val;
-    
     // Two pointers.
-    size_t tortoise_index = 0;
-    size_t hare_index = 1;
+    size_t tortoise_index = 1;
+    size_t hare_index = 2;
+    //std::cout << "T: " << tortoise_index << ":" << num[tortoise_index] << "   H: " << hare_index << ":" << num[hare_index] << "\n";
     while (tortoise_index < num.size()
     && num[tortoise_index] != num[hare_index]) {
         // Increment tortoise by 1, hare by 2. If hare goes beyond end of the
@@ -344,7 +349,9 @@ range_pair find_repeat(int_vec num) {
         if (hare_index >= num.size()) {
             hare_index %= num.size();
         }
+        //std::cout << "T: " << tortoise_index << ":" << num[tortoise_index] << "   H: " << hare_index << ":" << num[hare_index] << "\n";
     }
+    //std::cout << "\n";
 
     // Tortoise and hare algorithm has finished.
     if (tortoise_index == num.size()) {
@@ -354,7 +361,7 @@ range_pair find_repeat(int_vec num) {
         return return_val;
     } else {
         // Repeat found.
-        return_val = subsequence_repeat(num, tortoise_index, hare_index);
+        return_val = subsequence_repeat(num, hare_index);
     }
     return return_val;
 }
@@ -362,45 +369,55 @@ range_pair find_repeat(int_vec num) {
 
 // Finds the earliest repeat in a sequence and returns the indices of the
 // start and end.
-range_pair subsequence_repeat(int_vec sequence, size_t start, size_t end) {
+range_pair subsequence_repeat(int_vec sequence, size_t end) {
     // Store the return value. Initialised later.
     range_pair result;
 
-    // Copy the original sequence into a new one.
-    int_vec subsequence;
-    subsequence.reserve(end - start + 1);
-    for (size_t index = start; index <= end; ++index) {
-        subsequence.push_back(sequence[index]);
+    // Move the tortoise back to the start to search for the start of the 
+    // repeating cycle.
+    size_t tortoise_index = 0;
+    size_t hare_index = end;
+    while (hare_index < sequence.size()
+    && sequence[tortoise_index] != sequence[hare_index]) {
+        // Move both at same speed until a match is found.
+        ++tortoise_index;
+        ++hare_index;
     }
 
-    // Find the first instance where the start element is repeated.
-    size_t test_index = 1;
-    while (test_index < subsequence.size()) {
-        if (subsequence[test_index] == subsequence[0]) {
-            result.range_start = start;
-            result.range_end = start + test_index;
-            return result;
+    if (hare_index == sequence.size()) {
+        // No repeat found.
+        result.range_start = -1;
+        result.range_end = -1;
+        return result;
+    } else {
+        // Tortoise and hare have same value. Find the first instance of the
+        // repeat.
+        int test_number = sequence[tortoise_index];
+        result.range_start = tortoise_index;
+        result.range_end = second_repeat(test_number, sequence) - 1;
+        return result;
+    }
+}
+
+
+// Finds the earliest repeat of an element in the sequence.
+size_t second_repeat(int test_num, int_vec values) {
+    size_t index = 0;
+    int repeat_count = 0;
+    while (index < values.size() && repeat_count < 2) {
+        if (values[index] == test_num) {
+            ++repeat_count;
         }
-        ++test_index;
+        ++index;
     }
 
-    // No repeat found.
-    result.range_start = -1;
-    result.range_end = -1;
-    return result;
+    return index;
 }
 
 
 // Prints the integer parts obtained from the fractional base conversion
 // algorithm.
 void print_result(int_vec int_parts, bool periodic, int start, int end) {  
-    if (!periodic && int_parts.size() == MAX_ITERATIONS) {
-        // The algorithm was stopped due to reaching maximum number of 
-        // iterations.
-        std::cout << RED << "\n\nTerminated prematurely after ";
-        std::cout << MAX_ITERATIONS << " iterations.\n" << RESET;
-    }
-    
     if (periodic) {
         print_periodic(int_parts, start, end);
     } else {

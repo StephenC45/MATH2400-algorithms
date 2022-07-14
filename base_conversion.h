@@ -100,14 +100,18 @@ range_pair old_f_convert(int_vec &num, int_vec &den, int_vec &ints, int base);
 range_pair find_repeat(int_vec num);
 
 
+// Finds the earliest repeat in a sequence and returns the indices of the
+// start and end.
+range_pair subsequence_repeat(int_vec sequence, size_t end);
+
+
+// Finds the second repeat of an element in the sequence.
+size_t second_repeat(int test_num, int_vec values);
+
+
 // From the old version. Checks if a numerator-denominator pair has appeared 
 // before. Returns true if they are found, or false otherwise.
 int old_is_repeat(int test_num, int test_den, int_vec num, int_vec den);
-
-
-// Finds the earliest repeat in a sequence and returns the indices of the
-// start and end.
-range_pair subsequence_repeat(int_vec sequence, size_t start, size_t end);
 
 
 // Prints the integer parts obtained from the fractional base conversion
