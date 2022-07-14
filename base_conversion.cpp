@@ -320,7 +320,6 @@ range_pair frac_convert(int_vec &num, int_vec &den, int_vec &ints, int base) {
 
     result = find_repeat(num);
     if (result.range_start != -1 && result.range_end != -1) {
-        std::cout << result.range_start << " to " << result.range_end << "\n";
         std::cout << "\nThis base conversion is periodic. The periodic ";
         std::cout << "part will be highlighted in " << BLUE << "blue";
         std::cout << RESET << ".\n";
