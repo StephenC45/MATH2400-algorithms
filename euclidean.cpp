@@ -162,8 +162,8 @@ void take_input_eea(int &num1, int &num2) {
         exit(EXIT_FAILURE);
     }
 
-    // Swap input order if needed.
-    swap_if_needed(num1, num2);
+    // Do not swap input order if needed.
+    // swap_if_needed(num1, num2);
     return;
 }
 
