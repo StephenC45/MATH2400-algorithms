@@ -17,3 +17,6 @@ SUPPORTING_FILES=debug.cpp euclidean.cpp base_conversion.cpp
 
 all: Makefile 2400.cpp $(SUPPORTING_FILES)
 	$(CPP) $(WARN_FLAGS) $(OTHER_FLAGS) $(SUPPORTING_FILES) 2400.cpp -o 2400
+
+primes: Makefile primes.cpp primes.h
+	$(CPP) $(WARN_FLAGS) $(OTHER_FLAGS) primes.cpp debug.cpp -o primes
