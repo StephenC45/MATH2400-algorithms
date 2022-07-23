@@ -2,7 +2,7 @@
 Implementation of Euclidean algorithm functions.
 
 Written by Stephen Chuang.
-Last updated 6 July 2022.
+Last updated 24 July 2022.
 */
 
 
