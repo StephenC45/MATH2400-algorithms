@@ -17,17 +17,19 @@ Last updated 6 July 2022.
 #include <cstdlib>
 
 
-#define str std::string
+#define bool_vec std::vector<bool>
 #define int long long
 #define int_vec std::vector<long long>
+#define str std::string
 
-#define RED "\033[31m"
+#define GREEN "\033[32m"
+#define RED   "\033[31m"
 #define RESET "\033[0m"
 
 
-
-// Debugging function that prints the contents of a vector.
+// Debugging functions that print the contents of a vector.
 void print_vector(int_vec v);
+void print_vector(bool_vec v);
 
 
 #endif
