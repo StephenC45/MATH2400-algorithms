@@ -8,10 +8,10 @@ The code in this repository implements various mathematical algorithms and can h
 - Extended Euclidean algorithm
 - Integer base conversion (up to and including base-36)
 - Decimal fraction base conversion (from decimal to another base)
+- Chinese remainder theorem for simultaneous linear congruences of the form x = k (mod m)
 
 **Coming soon:**
 - Calculating convergents and error bounds from partial quotients
-- Chinese remainder theorem for simultaneous linear congruences of the form x = k (mod m)
 - Sieve of Eratosthenes
 - Linear Diophantine equation solver
 
