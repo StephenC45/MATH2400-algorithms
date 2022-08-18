@@ -43,6 +43,11 @@ int do_euclidean(void);
 int do_extended_euclidean(void);
 
 
+// Runs extended Euclidean algorithm without having to read user input.
+// For use by other programs.
+void auto_eea(int_v &q, int_v &r, int_v &x, int_v &y, int a, int b);
+
+
 // Prints limitations for the Euclidean algorithm.
 void print_limitations_ea(void);
 

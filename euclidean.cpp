@@ -76,6 +76,31 @@ int do_extended_euclidean(void) {
 }
 
 
+// Runs extended Euclidean algorithm without having to read user input.
+// For use by other programs.
+void auto_eea(int_v &q, int_v &r, int_v &x, int_v &y, int a, int b) {
+    // Determine width for formatted printing.
+    int width = log10(max(a, b)) + 1;
+
+    // Perform the extended Euclidean algorithm.
+    setup_eea(q, r, x, y, a, b);
+    extended_euclidean(q, r, x, y, width);
+
+    // Check and show the results.
+    width = log10(max(a, b)) + 2;
+    if (check_success(q, r, x, y, width)) {
+        show_full_result(q, r, x, y, width);
+        std::cout << "GCD = " << r[r.size() - 2] << '\n';
+        std::cout << "  x = " << x[x.size() - 2] << '\n';
+        std::cout << "  y = " << y[y.size() - 2] << '\n';
+        std::cout << "\nGCD = " << x[x.size() - 2] << " * " << a << " + ";
+        std::cout << y[y.size() - 2] << " * " << b << "\n\n";
+    }
+
+    return;
+}
+
+
 // Prints limitations for the Euclidean algorithm.
 void print_limitations_ea(void) {
     std::cout << "Limitations:\n";
