@@ -3,11 +3,12 @@ A program that can help you check your answers to some types of MATH2400
 problems.
 
 Written by Stephen Chuang.
-Last updated 6 July 2022.
+Last updated 18 August 2022.
 */
 
 
 #include "base_conversion.h"
+#include "CRT.h"
 #include "debug.h"
 #include "euclidean.h"
 
@@ -34,11 +35,17 @@ int32_t main(void) {
         return do_integer_base_conversion();
     } else if (input == "4") {
         return do_fraction_base_conversion();
+    } else if (input == "5") {
+        std::cout << "Coming soon!\n"; return 0;
+    } else if (input == "6") {
+        std::cout << "Coming soon!\n"; return 0;
+    } else if (input == "7") {
+        return do_crt_congruences();
     }
 
     // Since none of the above triggered, input is invalid.
     std::cerr << RED << "Error: unknown input '" << input << "'" << RESET;
-    std::cerr << RESET << "\n";
+    std::cerr << "\n";
     return EXIT_FAILURE;
 }
 
@@ -60,6 +67,9 @@ void print_welcome(void) {
     std::cout << " 2 - Extended Euclidean Algorithm\n";
     std::cout << " 3 - Integer Base Conversion (up to base-36)\n";
     std::cout << " 4 - Decimal Fraction Base Conversion\n";
+    std::cout << " 5 - (coming soon) Fraction to Continued Fraction\n";
+    std::cout << " 6 - (coming soon) Continued Fraction Convergents\n";
+    std::cout << " 7 - Chinese Remainder Theorem (Linear Congruences)\n";
 
     std::cout << "\n";
     return;
