@@ -2,7 +2,7 @@
 Header file for Euclidean algorithm functions.
 
 Written by Stephen Chuang.
-Last updated 6 July 2022.
+Last updated 19 August 2022.
 */
 
 
@@ -48,6 +48,11 @@ int do_extended_euclidean(void);
 void auto_eea(int_v &q, int_v &r, int_v &x, int_v &y, int a, int b);
 
 
+// Runs extended Euclidean algorithm without needing user input and without
+// printing anything.
+void auto_silent_eea(int_v &q, int_v &r, int_v &x, int_v &y, int a, int b);
+
+
 // Prints limitations for the Euclidean algorithm.
 void print_limitations_ea(void);
 
@@ -83,6 +88,15 @@ void setup_eea(int_vec &q, int_vec &r, int_vec &x, int_vec &y, int n1, int n2);
 
 // Performs extended Euclidean algorithm.
 xy_pair extended_euclidean(int_v &q, int_v &r, int_v &x, int_v &y, int width);
+
+
+// Performs the extended Euclidean algorithm without printing anything.
+void silent_extended_euclidean(int_v &q, int_v &r, int_v &x, int_v &y);
+
+
+// Performs regular Euclidean algorithm without printing anything. Modifies
+// vectors that store quotients and remainders only. Returns iteration count.
+int silent_euclidean_vectors(int_v &q, int_v &r);
 
 
 // Performs normal Euclidean algorithm to get quotients and remainders.

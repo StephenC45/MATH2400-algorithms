@@ -2,7 +2,7 @@
 Implementation of Euclidean algorithm functions.
 
 Written by Stephen Chuang.
-Last updated 6 July 2022.
+Last updated 19 August 2022.
 */
 
 
@@ -82,7 +82,7 @@ void auto_eea(int_v &q, int_v &r, int_v &x, int_v &y, int a, int b) {
     // Determine width for formatted printing.
     int width = log10(max(a, b)) + 1;
 
-    // Perform the extended Euclidean algorithm.
+    // Perform the extended Euclidean algorithm as normal.
     setup_eea(q, r, x, y, a, b);
     extended_euclidean(q, r, x, y, width);
 
@@ -97,6 +97,16 @@ void auto_eea(int_v &q, int_v &r, int_v &x, int_v &y, int a, int b) {
         std::cout << y[y.size() - 2] << " * " << b << "\n\n";
     }
 
+    return;
+}
+
+
+// Runs extended Euclidean algorithm without needing user input and without
+// printing anything.
+void auto_silent_eea(int_v &q, int_v &r, int_v &x, int_v &y, int a, int b) {
+    // Set up the extended Euclidean algorithm and run it silently.
+    setup_eea(q, r, x, y, a, b);
+    silent_extended_euclidean(q, r, x, y);
     return;
 }
 
@@ -240,6 +250,45 @@ xy_pair extended_euclidean(int_v &q, int_v &r, int_v &x, int_v &y, int width) {
     result.x = x[x.size() - 2];
     result.y = y[y.size() - 2];
     return result;
+}
+
+
+// Performs the extended Euclidean algorithm without printing anything.
+void silent_extended_euclidean(int_v &q, int_v &r, int_v &x, int_v &y) {
+    // Silently fill quotients and remainders using normal Euclidean algorithm.
+    int iteration_count = silent_euclidean_vectors(q, r);
+
+    // Fill in rows for x and y.
+    for (int i = 0; i < iteration_count; ++i) {
+        x.push_back(x[x.size() - 2] - (q[x.size() - 2] * x[x.size() - 1]));
+        y.push_back(y[y.size() - 2] - (q[y.size() - 2] * y[y.size() - 1]));
+    }
+
+    return;
+}
+
+
+// Performs regular Euclidean algorithm without printing anything. Modifies
+// vectors that store quotients and remainders only. Returns iteration count.
+int silent_euclidean_vectors(int_v &q, int_v &r) {
+    int iteration_count = 0;
+    
+    // Initialise arbitrary values for remainder and quotient, print newline to
+    // make output look neater.
+    int remainder = 1;
+    int quotient = 0;
+
+    while (remainder != 0) {
+        // Update quotient and remainder vectors, printing steps along the way.
+        quotient = r[r.size() - 2] / r[r.size() - 1];
+        remainder = r[r.size() - 2] % r[r.size() - 1];
+
+        q.push_back(quotient);
+        r.push_back(remainder);
+        ++iteration_count;
+    }
+
+    return iteration_count;
 }
 
 
