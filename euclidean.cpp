@@ -13,30 +13,30 @@ Last updated 6 July 2022.
 int do_euclidean(void) {
     print_limitations_ea();
     // Read two numbers from the user.
-    int input1;
-    int input2;
+    int num1;
+    int num2;
     std::cout << "Enter 2 positive integers (space separated): ";
-    std::cin >> input1 >> input2;
+    std::cin >> num1 >> num2;
 
     // Input validation.
-    if (input1 <= 0 || input2 <= 0) {
+    if (num1 <= 0 || num2 <= 0 || num1 > MAX_INT_64 || num2 > MAX_INT_64) {
         std::cerr << "Error: invalid input.\n";
         exit(EXIT_FAILURE);
     }
 
     // Determine width for formatted printing.
-    int width = log10(max(input1, input2)) + 1;
+    int width = log10(max(num1, num2)) + 1;
 
     // Run the Euclidean algorithm, storing the result in a variable.
     int result;
-    if (input1 > input2) {
-        result = euclidean(input1, input2, width);
+    if (num1 > num2) {
+        result = euclidean(num1, num2, width);
     } else {
-        result = euclidean(input2, input1, width);
+        result = euclidean(num2, num1, width);
     }
 
     // Print the GCD and terminate the program.
-    std::cout << "GCD is: " << result << '\n';
+    std::cout << "GCD is: " << result << "\n\n";
     return 0;
 }
 
@@ -44,29 +44,31 @@ int do_euclidean(void) {
 // The main code that runs the extended Euclidean algorithm.
 int do_extended_euclidean(void) {
     print_limitations_eea();
-    // Read and validate user input.
+    // Read and validate user input. Then determine width of formatted printing.
     int input1;
     int input2;
     take_input_eea(input1, input2);
-    
-    int_vec q;
-    int_vec r;
-    int_vec x;
-    int_vec y;
+    int width = log10(max(input1, input2)) + 1;
+
+    // Vectors to store quotients, remainders, x values, and y values.
+    int_v q;
+    int_v r;
+    int_v x;
+    int_v y;
 
     // Perform the extended Euclidean algorithm.
     setup_eea(q, r, x, y, input1, input2);
-    extended_euclidean(q, r, x, y);
+    extended_euclidean(q, r, x, y, width);
 
     // Check and show the results.
-    int width = log10(max(input1, input2)) + 2;
+    width = log10(max(input1, input2)) + 2;
     if (check_success(q, r, x, y, width)) {
         show_full_result(q, r, x, y, width);
         std::cout << "GCD = " << r[r.size() - 2] << '\n';
         std::cout << "  x = " << x[x.size() - 2] << '\n';
         std::cout << "  y = " << y[y.size() - 2] << '\n';
         std::cout << "\nGCD = " << x[x.size() - 2] << " * " << input1 << " + ";
-        std::cout << y[y.size() - 2] << " * " << input2 << '\n';
+        std::cout << y[y.size() - 2] << " * " << input2 << "\n\n";
         return 0;
     }
 
@@ -80,7 +82,7 @@ void print_limitations_ea(void) {
 
     std::cout << "- Maximum input should be around 9 * 10^18 to avoid integer ";
     std::cout << "overflow.\n";
-    std::cout << "- No protection from integer overflow.\n";
+    std::cout << "- No protection from integer overflow.\n\n";
 
     return;
 }
@@ -108,10 +110,10 @@ int max(int a, int b) {
 // Runs the Euclidean algorithm to calculate the standard GCD, prints out each
 // step, and then returns the GCD.
 int euclidean(int a, int b, int output_width) {
+    // Keep track of quotient and remainder only.
     int quotient;
     int remainder;
-
-    std::cout << "\nCalculating GCD of " << a << " and " << b << "\n\n";
+    std::cout << "\n";
 
     // First iteration.
     remainder = a % b;
@@ -162,8 +164,8 @@ void take_input_eea(int &num1, int &num2) {
         exit(EXIT_FAILURE);
     }
 
-    // Swap input order if needed.
-    swap_if_needed(num1, num2);
+    // Swap input order if needed. Uncomment line below if you need this.
+    // swap_if_needed(num1, num2);
     return;
 }
 
@@ -180,7 +182,7 @@ void swap_if_needed(int &num1, int &num2) {
 
 
 // Sets up the extended Euclidean algorithm.
-void setup_eea(int_vec &q, int_vec &r, int_vec &x, int_vec &y, int n1, int n2) {
+void setup_eea(int_v &q, int_v &r, int_v &x, int_v &y, int n1, int n2) {
     // Allocate memory to store values.
     q.reserve(45);
     r.reserve(45);
@@ -199,9 +201,9 @@ void setup_eea(int_vec &q, int_vec &r, int_vec &x, int_vec &y, int n1, int n2) {
 
 
 // Performs extended Euclidean algorithm.
-xy_pair extended_euclidean(int_vec &q, int_vec &r, int_vec &x, int_vec &y) {
+xy_pair extended_euclidean(int_v &q, int_v &r, int_v &x, int_v &y, int width) {
     // Fill quotients and remainders using normal Euclidean algorithm.
-    int iteration_count = normal_euclidean(q, r);
+    int iteration_count = normal_euclidean(q, r, width);
 
     // Fill in the rows for x and y.
     for (int i = 0; i < iteration_count; ++i) {
@@ -218,14 +220,22 @@ xy_pair extended_euclidean(int_vec &q, int_vec &r, int_vec &x, int_vec &y) {
 
 // Performs normal Euclidean algorithm to get quotients and remainders.
 // Returns the number of iterations, not the GCD.
-int normal_euclidean(int_vec &q, int_vec &r) {
+int normal_euclidean(int_v &q, int_v &r, int width) {
     int iteration_count = 0;
     
+    // Initialise arbitrary values for remainder and quotient, print newline to
+    // make output look neater.
     int remainder = 1;
     int quotient = 0;
+    std::cout << "\n";
+
     while (remainder != 0) {
+        // Update quotient and remainder vectors, printing steps along the way.
         quotient = r[r.size() - 2] / r[r.size() - 1];
         remainder = r[r.size() - 2] % r[r.size() - 1];
+        int a = r[r.size() - 2];
+        int b = r[r.size() - 1];
+        print_step(a, b, quotient, remainder, width);
 
         q.push_back(quotient);
         r.push_back(remainder);
@@ -237,7 +247,7 @@ int normal_euclidean(int_vec &q, int_vec &r) {
 
 
 // Prints the result from the extended Euclidean algorithm in full.
-void show_full_result(int_vec q, int_vec r, int_vec x, int_vec y, int width) {
+void show_full_result(int_v q, int_v r, int_v x, int_v y, int width) {
     std::cout << '\n';
 
     // Leave two blank entries to make quotients line up.
@@ -263,7 +273,7 @@ void show_full_result(int_vec q, int_vec r, int_vec x, int_vec y, int width) {
 
 
 // Formatted printing of vector.
-void format_print_vector(int_vec v, int width) {
+void format_print_vector(int_v v, int width) {
     for (int value : v) {
         std::cout << std::setw(width) << value << " | ";
     }
@@ -273,7 +283,7 @@ void format_print_vector(int_vec v, int width) {
 
 
 // Checks the result from the extended Euclidean algorithm.
-bool check_success(int_vec q, int_vec r, int_vec x, int_vec y, int width) {
+bool check_success(int_v q, int_v r, int_v x, int_v y, int width) {
     // Get the initial input and the penultimate element of r, x, and y.
     int num1 = r[0];
     int num2 = r[1];

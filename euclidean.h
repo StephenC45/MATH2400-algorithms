@@ -27,7 +27,9 @@ typedef struct xy_pair {
 
 #define str std::string
 #define int long long
-#define int_vec std::vector<long long>
+#define int_v std::vector<long long>
+
+#define MAX_INT_64 9e18
 
 #define RED "\033[31m"
 #define RESET "\033[0m"
@@ -75,12 +77,12 @@ void setup_eea(int_vec &q, int_vec &r, int_vec &x, int_vec &y, int n1, int n2);
 
 
 // Performs extended Euclidean algorithm.
-xy_pair extended_euclidean(int_vec &q, int_vec &r, int_vec &x, int_vec &y);
+xy_pair extended_euclidean(int_v &q, int_v &r, int_v &x, int_v &y, int width);
 
 
 // Performs normal Euclidean algorithm to get quotients and remainders.
 // Returns the number of iterations, not the GCD.
-int normal_euclidean(int_vec &q, int_vec &r);
+int normal_euclidean(int_vec &q, int_vec &r, int width);
 
 
 // Prints the result from the extended Euclidean algorithm in full.
