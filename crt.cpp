@@ -6,7 +6,7 @@ Last updated 19 August 2022.
 */
 
 
-#include "CRT.h"
+#include "crt.h"
 
 
 // The main code that runs the CRT for linear congruences.
