@@ -26,8 +26,6 @@ int do_crt_congruences(void) {
     int product = calculate_product(moduli);
     if (product < 0) {
         // calculate_product() returned negative value so an error occurred.
-        // moduli.~vector();
-        // constants.~vector();
         return EXIT_FAILURE;
     }
 
