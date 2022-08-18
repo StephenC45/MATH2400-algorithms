@@ -10,8 +10,8 @@
 
 CPP=g++
 WARN_FLAGS=-Wall -Wextra -Wshadow
-OTHER_FLAGS=-pedantic-errors -std=c++17 -O3
-SUPPORTING_FILES=debug.cpp euclidean.cpp base_conversion.cpp crt.cpp
+OTHER_FLAGS=-pedantic-errors -std=c++17 -g
+SUPPORTING_FILES=debug.cpp euclidean.cpp base_conversion.cpp crt.cpp continued_fractions.cpp
 
 #------------------------------------------------------------------------------#
 
