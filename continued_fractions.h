@@ -17,7 +17,7 @@ Last updated 19 August 2022.
 
 
 #define int long long
-#define int_vec std::vector<long long>
+#define int_v std::vector<long long>
 
 #define MAX_INPUT 1e8
 
@@ -31,6 +31,11 @@ Last updated 19 August 2022.
 int do_convert_cont_frac(void);
 
 
+// The main code that converts a fraction into its continued fraction
+// representation and prints convergents and error bounds.
+int do_cont_frac_convergents(void);
+
+
 // Prints limitations for continued fraction conversion.
 void print_limitations_cf_convert(void);
 
@@ -41,7 +46,7 @@ void print_limitations_cf_converge(void);
 
 // Converts a fraction into a continued fraction without having to read input
 // from user.
-void auto_convert_cont_frac(int numerator, int denominator);
+void auto_cont_frac(int n, int d, int_v &q, int_v &r, int_v &x, int_v &y);
 
 
 // Reads numerator and denominator fron user.
@@ -50,7 +55,23 @@ void take_input_cf_convert(int &num, int &den);
 
 // Prints a continued fraction when given a vector containing quotients from
 // Euclidean algorithm.
-void print_cont_frac(int_vec quotients);
+void print_cont_frac(int_v quotients);
+
+
+// Returns the absolute value of the input.
+int absolute_val(int input);
+
+
+// Prints convergents.
+void print_convergents(int_v q, int_v x, int_v y);
+
+
+// Finds the error bound of convergent i.
+int calculate_error_bound(int_v q, int_v x, size_t i);
+
+
+// Prints messages about where the program stopped printing convergents.
+void print_convergent_stop(int stop_point);
 
 
 #endif

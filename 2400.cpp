@@ -39,7 +39,7 @@ int32_t main(void) {
     } else if (input == "5") {
         return do_convert_cont_frac();
     } else if (input == "6") {
-        std::cout << "Coming soon!\n"; return 0;
+        return do_cont_frac_convergents();
     } else if (input == "7") {
         std::cout << "Coming soon!\n"; return 0;
     } else if (input == "8") {
