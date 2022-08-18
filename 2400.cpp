@@ -3,7 +3,7 @@ A program that can help you check your answers to some types of MATH2400
 problems.
 
 Written by Stephen Chuang.
-Last updated 18 August 2022.
+Last updated 19 August 2022.
 */
 
 
@@ -40,6 +40,8 @@ int32_t main(void) {
     } else if (input == "6") {
         std::cout << "Coming soon!\n"; return 0;
     } else if (input == "7") {
+        std::cout << "Coming soon!\n"; return 0;
+    } else if (input == "8") {
         return do_crt_congruences();
     }
 
@@ -69,7 +71,8 @@ void print_welcome(void) {
     std::cout << " 4 - Decimal Fraction Base Conversion\n";
     std::cout << " 5 - (coming soon) Fraction to Continued Fraction\n";
     std::cout << " 6 - (coming soon) Continued Fraction Convergents\n";
-    std::cout << " 7 - Chinese Remainder Theorem (Linear Congruences)\n";
+    std::cout << " 7 - (coming soon) Linear Diophantine Solver\n";
+    std::cout << " 8 - Chinese Remainder Theorem (Linear Congruences)\n";
 
     std::cout << "\n";
     return;

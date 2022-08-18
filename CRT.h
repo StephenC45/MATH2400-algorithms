@@ -2,7 +2,7 @@
 Header file for Chinese remainder theorem functions.
 
 Written by Stephen Chuang.
-Last updated 27 July 2022.
+Last updated 19 August 2022.
 */
 
 
@@ -15,6 +15,7 @@ Last updated 27 July 2022.
 #include <stack>
 #include <vector>
 #include "debug.h"
+#include "euclidean.h"
 
 
 #define int long long
@@ -56,9 +57,19 @@ int gcd(int a, int b);
 int brute_force(int_vec constants, int_vec moduli, int lcm);
 
 
-// Handles the situation where moduli are not pairwise coprime.
-// Moduli not pairwise coprime.
+// Handles the situation where moduli are not pairwise coprime. Uses a brute
+// force approach to solve if possible.
 int handle_not_coprime(int_vec c, int_vec m, int lcm);
+
+
+// Handles the situation where moduli are pairwise coprime. This is the normal
+// application of Chinese remainder theorem.
+int handle_coprime(int_vec c, int_vec m, int product);
+
+
+// Solve an equation of the form kx = 1 (mod m) using extended Euclidean
+// algorithm.
+int solve_congruent_to_one(int x_coeff, int mod);
 
 
 #endif

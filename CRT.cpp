@@ -2,7 +2,7 @@
 Implementation of Chinese remainder theorem functions.
 
 Written by Stephen Chuang.
-Last updated 18 August 2022.
+Last updated 19 August 2022.
 */
 
 
@@ -41,6 +41,11 @@ int do_crt_congruences(void) {
         }
     } else {
         // Moduli are pairwise coprime.
+        int solution = handle_coprime(constants, moduli, product);
+        if (solution >= 0) {
+            std::cout << "\nSolution: x = " << solution << " (mod " << lcm;
+            std::cout << ")\n\n";
+        }
     }
     
     return 0;
@@ -105,7 +110,7 @@ int calculate_lcm(int_vec v) {
         mod_stack.push(value);
     }
 
-    // Keep going until there are 2 elements left in the stack.
+    // Keep going until there are fewer than 2 elements left in the stack.
     while (mod_stack.size() >= 2) {
         int num1 = mod_stack.top();
         mod_stack.pop();
@@ -184,7 +189,8 @@ int brute_force(int_vec constants, int_vec moduli, int lcm) {
 }
 
 
-// Handles the situation where moduli are not pairwise coprime.
+// Handles the situation where moduli are not pairwise coprime. Uses a brute
+// force approach to solve if possible.
 int handle_not_coprime(int_vec c, int_vec m, int lcm) {
     // Inform user that moduli are not pairwise coprime.
     std::cerr << YELLOW << "\nWarning: moduli not pairwise coprime." << RESET;
@@ -203,4 +209,68 @@ int handle_not_coprime(int_vec c, int_vec m, int lcm) {
         int solution = brute_force(c, m, lcm);
         return solution;
     }
+}
+
+
+// Handles the situation where moduli are pairwise coprime. This is the normal
+// application of Chinese remainder theorem.
+int handle_coprime(int_vec c, int_vec m, int product) {
+    // Check that constants and moduli have same size.
+    if (c.size() != m.size()) {
+        std::cerr << RED << "Error: malformed vectors storing constants and ";
+        std::cerr << "moduli for CRT." << RESET << "\n";
+        return -1;
+    }
+    
+    // Store preliminary x results.
+    int_vec prelim_x_results;
+    prelim_x_results.reserve(c.size());
+    
+    // For each modulus m, solve (product / m) = 1 (mod m) and add this solution
+    // to prelim_x_results.
+    for (int modulus : m) {
+        int x_coeff = product / modulus;
+        prelim_x_results.push_back(solve_congruent_to_one(x_coeff, modulus));
+    }
+
+    // Check that constants and preliminary results have same size.
+    if (c.size() != m.size()) {
+        std::cerr << RED << "Error: malformed vectors storing constants and ";
+        std::cerr << "x_i solutions for CRT." << RESET << "\n";
+        return -1;
+    }
+
+    // Now take preliminary x results and turn it into a general solution.
+    int solution = 0;
+    for (size_t index = 0; index < c.size(); ++index) {
+        int mod = m[index];
+        int x_val = prelim_x_results[index];
+        int c_val = c[index];
+        solution += (product / mod) * x_val * c_val;
+    }
+
+    return solution % product;
+}
+
+
+// Solve an equation of the form kx = 1 (mod m) using extended Euclidean
+// algorithm.
+int solve_congruent_to_one(int x_coeff, int mod) {
+    // Vectors to use in extended Euclidean algorithm.
+    int_vec q;
+    int_vec r;
+    int_vec x;
+    int_vec y;
+
+    // Silently run extended Euclidean algorithm, with x_coeff and mod as input.
+    auto_silent_eea(q, r, x, y, x_coeff, mod);
+
+    // Read off the second to last x value and adjust to make it positive in its
+    // modulus.
+    int solution = x[x.size() - 2];
+    if (solution < 0) {
+        solution += mod;
+    }
+
+    return solution;
 }
