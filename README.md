@@ -11,7 +11,9 @@ The code in this repository implements various mathematical algorithms and can h
 
 **Coming soon:**
 - Calculating convergents and error bounds from partial quotients
+- Chinese remainder theorem for simultaneous linear congruences of the form x = k (mod m)
 - Sieve of Eratosthenes
+- Linear Diophantine equation solver
 
 # Instructions (Linux)
 1. Clone this repository.
@@ -21,8 +23,8 @@ The code in this repository implements various mathematical algorithms and can h
 5. Compile all files by typing ```make```.
 6. Run the program using ```./2400``` and enjoy.
 
-# Instructions (Windows)
-1. If you haven't already, install TDM-GCC here: https://jmeubank.github.io/tdm-gcc/
+# Instructions (Windows, No C++ Compiler Installed)
+1. If you haven't already, install a C++ compiler (this guide uses TDM-GCC) here: https://jmeubank.github.io/tdm-gcc/
 2. Clone this repository.
 3. Open PowerShell and change into the repository.
 4. Compile all files using one of the compilation commands below.
