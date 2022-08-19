@@ -29,7 +29,8 @@ typedef struct xy_pair {
 #define int long long
 #define int_v std::vector<long long>
 
-#define MAX_INT_64 9e18
+#define MAX_INT_64 9000000000000000000 // 9 * 10^18
+#define EEA_MAX_INT 1000000000         // 10^9
 
 #define RED "\033[31m"
 #define RESET "\033[0m"
