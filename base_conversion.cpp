@@ -40,13 +40,21 @@ int do_integer_base_conversion(void) {
 
 // The main code that runs decimal fraction base conversion.
 int do_fraction_base_conversion(void) {
-    print_limitations_frac();
     // Read user input for numerator and denominator.
-    int numerator;
+    print_limitations_frac();
+    int original_num;
     int denominator;
     int new_base;
     bool periodic = true;
-    take_input_frac(numerator, denominator, new_base);
+    take_input_frac(original_num, denominator, new_base);
+
+    // Calculate the integer part and set numerator to numerator of fractional
+    // part only.
+    int int_part = original_num / denominator;
+    int numerator = original_num % denominator;
+
+    // Perform base conversion on integer part.
+    str converted_int = auto_dec_int_conversion(int_part, new_base);
 
     // Vectors to store the integer and fractional parts after multiplying by
     // the base.
@@ -75,8 +83,8 @@ int do_fraction_base_conversion(void) {
         std::cout << RED << "\n\nTerminated prematurely after ";
         std::cout << MAX_ITERATIONS << " iterations.\n" << RESET;
     }
-    std::cout << "\n" << numerator << " / " << denominator << " in base-";
-    std::cout << new_base << ": 0.";
+    std::cout << "\n" << original_num << " / " << denominator << " in base-";
+    std::cout << new_base << ": " << converted_int << ".";
     print_result(integer_parts, periodic, range.range_start, range.range_end);
     return 0;
 }
@@ -99,9 +107,7 @@ void print_limitations_frac(void) {
     
     std::cout << "- This program rarely produces the simplest possible ";
     std::cout << "period.\n- Do your own checking by writing out the periodic ";
-    std::cout << "part a few times to find the simplest possible period.\n";
-    std::cout << "- Does not tolerate fractions larger than or equal to 1.\n";
-    std::cout << "- No protections from integer overflow.\n\n";
+    std::cout << "part a few times to find the simplest possible period.\n\n";
     return;
 }
 
@@ -312,7 +318,7 @@ void take_input_frac(int &num, int &den, int &base) {
     // Read the denominator.
     std::cout << "Enter base-10 denominator: ";
     if (std::cin >> den) {
-        if (den > MAX_INT || den <= num) {
+        if (den > MAX_INT) {
             std::cerr << RED << "Error: denominator too large.\n" << RESET;
             exit(EXIT_FAILURE);
         }
@@ -492,4 +498,42 @@ void print_periodic(int_vec int_parts, int start, int end) {
         std::cout << int_parts[index];
     }
     std::cout << RESET;
+}
+
+
+// Performs decimal integer base conversion without having to read input from 
+// the user.
+str auto_dec_int_conversion(int value, int new_base) {
+    // Perform integer base conversion algorithm and return result as a string.
+    str result = "";
+
+    // First iteration. Add remainder to string.
+    int quotient = value / new_base;
+    int remainder = value % new_base;
+    result += (remainder + '0');
+
+    // Keep performing further iterations until quotuent is zero.
+    while (quotient != 0) {
+        int new_value = quotient;
+        quotient = new_value / new_base;
+        remainder = new_value % new_base;
+        result += (remainder + '0');
+    }
+
+    // Reverse string before returning it.
+    result = reverse_string(result);
+    return result;
+}
+
+
+// Reverses a string.
+str reverse_string(str input_str) {
+    str reversed = "";
+
+    // Add elements to string in reverse order.
+    for (int index = input_str.size() - 1; index >= 0; --index) {
+        reversed += input_str[index];
+    }
+
+    return reversed;
 }

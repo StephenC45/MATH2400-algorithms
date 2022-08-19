@@ -2,7 +2,7 @@
 Header file for base conversion functions.
 
 Written by Stephen Chuang.
-Last updated 14 July 2022.
+Last updated 19 August 2022.
 */
 
 
@@ -27,11 +27,16 @@ typedef struct range_pair {
 #define int_vec std::vector<long long>
 #define str std::string
 
-#define MAX_LENGTH 12
-#define MAX_BASE 36
-#define MAX_INT 1000000000     // 10^9
-#define MAX_ITERATIONS 2500000 // You may change this. O(n).
-#define OLD_MAX_ITER 25000     // You may change this. O(n^2).
+#define MAX_LENGTH     12
+#define MAX_BASE       36
+#define MAX_INT        1000000000 // 10^9
+#define MAX_ITERATIONS 2500000    // You may change this. O(n) time.
+#define OLD_MAX_ITER   25000      // You may change this. O(n^2) time.
+
+#define BINARY      2
+#define OCTAL       8
+#define DECIMAL     10
+#define HEXADECIMAL 16
 
 #define BLUE  "\033[36m"
 #define RED   "\033[31m"
@@ -121,6 +126,15 @@ void print_result(int_vec int_parts, bool periodic, int start, int end);
 
 // Prints the result if periodic.
 void print_periodic(int_vec int_parts, int start, int end);
+
+
+// Performs decimal integer base conversion without having to read input from 
+// the user.
+str auto_dec_int_conversion(int value, int new_base);
+
+
+// Reverses a string.
+str reverse_string(str input_str);
 
 
 #endif
