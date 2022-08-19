@@ -1,5 +1,5 @@
 # About This Repository
-The code in this repository implements various mathematical algorithms and can help check your answers to problems from the MATH2400 (Finite Mathematics) course at UNSW.
+The code in this repository is a command-line tool that implements various mathematical algorithms and can help check your answers to problems from the MATH2400 (Finite Mathematics) course at UNSW.
 
 **This is a work in progress.**
 
@@ -10,11 +10,11 @@ The code in this repository implements various mathematical algorithms and can h
 - Decimal fraction base conversion (from decimal to another base)
 - Converting simple fractions into continued fractions
 - Showing continued fraction convergents of a simple fraction
+- Linear Diophantine equation solver
 - Chinese remainder theorem for simultaneous linear congruences of the form x = k (mod m)
+- Sieve of Eratosthenes
 
 **Coming soon:**
-- Sieve of Eratosthenes
-- Linear Diophantine equation solver
 - A single-threaded benchmarking program (maybe)
 
 # Instructions (Linux)
@@ -34,11 +34,11 @@ The code in this repository implements various mathematical algorithms and can h
 
 Compilation command for using ```base_conversion.cpp```:
 
-```g++ -Wall -Wextra -Wshadow -pedantic-errors -std=c++17 -g debug.cpp euclidean.cpp base_conversion.cpp crt.cpp continued_fractions.cpp 2400.cpp -o 2400.exe```
+```g++ -Wall -Wextra -Wshadow -pedantic-errors -std=c++17 -O3 debug.cpp euclidean.cpp base_conversion.cpp crt.cpp continued_fractions.cpp linear_diophantine.cpp sieve.cpp 2400.cpp -o 2400.exe```
 
 Compilation command for using ```old_base_conversion.cpp```:
 
-```g++ -Wall -Wextra -Wshadow -pedantic-errors -std=c++17 -g debug.cpp euclidean.cpp old_base_conversion.cpp crt.cpp continued_fractions.cpp 2400.cpp -o 2400.exe```
+```g++ -Wall -Wextra -Wshadow -pedantic-errors -std=c++17 -O3 debug.cpp euclidean.cpp old_base_conversion.cpp crt.cpp continued_fractions.cpp linear_diophantine.cpp sieve.cpp 2400.cpp -o 2400.exe```
 
 # Feedback
 Report bugs, suggest features, and give feedback using this link: https://forms.gle/DpoX1eTry7V9yewV7
