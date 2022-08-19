@@ -96,7 +96,7 @@ void print_limitations_int(void) {
     
     std::cout << "- Maximum string length is " << MAX_LENGTH << " chars ";
     std::cout << "(configurable in base_conversion.h).\n";
-    std::cout << "- Maximum base of 36.\n";
+    std::cout << "- Maximum base of 36.\n\n";
     return;
 }
 
