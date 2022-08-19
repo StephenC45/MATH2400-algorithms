@@ -16,11 +16,16 @@ int do_euclidean(void) {
     int num1;
     int num2;
     std::cout << "Enter 2 positive integers (space separated): ";
-    std::cin >> num1 >> num2;
+    if (std::cin >> num1 >> num2) {
+        // Numbers successfully read.
+    } else {
+        std::cerr << RED << "Error reading input." << RESET << "\n";
+        exit(EXIT_FAILURE);
+    }
 
     // Input validation.
     if (num1 <= 0 || num2 <= 0 || num1 > MAX_INT_64 || num2 > MAX_INT_64) {
-        std::cerr << "Error: invalid input.\n";
+        std::cerr << RED << "Error: invalid input." << RESET << "\n";
         exit(EXIT_FAILURE);
     }
 
@@ -186,13 +191,19 @@ void print_step(int a, int b, int q, int r, int width) {
 void take_input_eea(int &num1, int &num2) {
     // Read input.
     std::cout << "Enter 2 positive integers (space separated): ";
-    std::cin >> num1 >> num2;
+    
+    if (std::cin >> num1 >> num2) {
+        // Numbers successfully read.
+    } else {
+        std::cerr << RED << "Error reading input." << RESET << "\n";
+        exit(EXIT_FAILURE);
+    }
 
     // Validate input.
     if (num1 <= 0 || num2 <= 0) {
         std::cerr << RED << "Error: invalid input.\n" << RESET;
         exit(EXIT_FAILURE);
-    } else if (num1 > 1e9 || num2 > 1e9) {
+    } else if (num1 > EEA_MAX_INT || num2 > EEA_MAX_INT) {
         std::cerr << RED;
         std::cerr << "Error: inputs this large can cause integer overflow.\n";
         std::cerr << RESET;

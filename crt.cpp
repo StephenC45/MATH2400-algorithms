@@ -15,7 +15,10 @@ int do_crt_congruences(void) {
     print_limitations_crt();
     int congruence_count;
     std::cout << "Enter number of congruences: ";
-    std::cin >> congruence_count;
+    if (!(std::cin >> congruence_count)) {
+        std::cerr << RED << "Error reading congruence count." << RESET << "\n";
+        exit(EXIT_FAILURE);
+    }
 
     // Read constants and moduli from user.
     int_vec moduli;

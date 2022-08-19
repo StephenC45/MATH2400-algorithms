@@ -98,11 +98,19 @@ void auto_cont_frac(int n, int d, int_v &q, int_v &r, int_v &x, int_v &y) {
 void take_input_cf_convert(int &num, int &den) {
     // Read numerator.
     std::cout << "Enter numerator: ";
-    std::cin >> num;
-
-    // Read denominator.
-    std::cout << "Enter denominator: ";
-    std::cin >> den;
+    if (std::cin >> num) {
+        // Numerator successfully read. Read denominator.
+        std::cout << "Enter denominator: ";
+        if (std::cin >> den) {
+            // Do nothing.
+        } else {
+            std::cerr << RED << "Error reading denominator." << RESET << "\n";
+            exit(EXIT_FAILURE);
+        }
+    } else {
+        std::cerr << RED << "Error reading numerator." << RESET << "\n";
+        exit(EXIT_FAILURE);
+    }
 
     // Error checking.
     if (num < 0 || num > MAX_INPUT) {

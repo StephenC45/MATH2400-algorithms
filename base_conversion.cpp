@@ -6,7 +6,7 @@ to perform 2.5 million iterations (instead of the old 25,000) but almost never
 produces a result with the simplest possible period.
 
 Written by Stephen Chuang.
-Last updated 14 July 2022.
+Last updated 19 August 2022.
 */
 
 
@@ -110,11 +110,14 @@ void print_limitations_frac(void) {
 void print_characters() {
     for (int i = 0; i < 26; ++i) {
         if (i > 0 && i % 6 == 0) {
+            // Print new line on every 6th entry.
             std::cout << '\n';
         } else if (i > 0) {
+            // Otherwise, print a tab character to separate entries.
             std::cout << '\t';
         }
 
+        // Print the value the character represents.
         char ch = 'A' + i;
         std::cout << ch << " = " << i + 10;
     }
@@ -127,26 +130,42 @@ void print_characters() {
 // Reads and validates input for integer base conversion.
 void take_input_int(str &in, int &old_base, int &new_base, int_vec &digits) {
     std::cout << "Enter a positive integer: ";
-    std::cin >> in;
-    if (in.length() > MAX_LENGTH) {
-        std::cerr << RED << "Error: integers this large may cause integer ";
-        std::cerr << "overflow.\n" << RESET;
+    if (std::cin >> in) {
+        // String read successfully. Check that it is a valid string.
+        if (in.length() > MAX_LENGTH) {
+            std::cerr << RED << "Error: integers this large may cause integer ";
+            std::cerr << "overflow.\n" << RESET;
+            exit(EXIT_FAILURE);
+        }
+    } else {
+        std::cerr << RED << "Error reading integer." << RESET << "\n";
         exit(EXIT_FAILURE);
     }
 
     std::cout << "This number is in base: ";
-    std::cin >> old_base;
-    if (old_base < 2 || old_base > MAX_BASE) {
-        std::cerr << RED << "Error: invalid base.\n" << RESET;
-        digits.~vector();
+    if (std::cin >> old_base) {
+        // Old base successfully read. Perform input validation.
+        if (old_base < 2 || old_base > MAX_BASE) {
+            std::cerr << RED << "Error: invalid base.\n" << RESET;
+            digits.~vector();
+            exit(EXIT_FAILURE);
+        }
+        check_string(in, old_base, digits);
+    } else {
+        std::cerr << RED << "Error reading old base." << RESET << "\n";
         exit(EXIT_FAILURE);
     }
-    check_string(in, old_base, digits);
 
     std::cout << "Convert to base: ";
-    std::cin >> new_base;
-    if (new_base < 2 || new_base > MAX_BASE) {
-        std::cerr << RED << "Error: invalid base.\n" << RESET;
+    if (std::cin >> new_base) {
+        // New base successfully read. Perform input validation.
+        if (new_base < 2 || new_base > MAX_BASE) {
+            std::cerr << RED << "Error: invalid base.\n" << RESET;
+            digits.~vector();
+            exit(EXIT_FAILURE);
+        }
+    } else {
+        std::cerr << RED << "Error reading new base." << RESET << "\n";
         digits.~vector();
         exit(EXIT_FAILURE);
     }
@@ -212,13 +231,16 @@ int_vec dec_to_base_digits(int decimal, int new_base) {
     int number = decimal;
     int quotient = 9999999999;
 
+    // Keep iterating until quotient is zero.
     while (quotient != 0) {
         quotient = number / new_base;
         int remainder = number % new_base;
         if (!check_remainder(remainder)) {
+            // Remainder obtained does not make sense.
             new_digits.~vector();
             exit(EXIT_FAILURE);
         }
+        // Store the remainder.
         new_digits.push_back(remainder);
         number = quotient;
     }
@@ -247,14 +269,17 @@ str digits_to_str(int_vec in_v, int new_base) {
         
         char new_character = '\0';
         if (new_digit >= new_base) {
+            // Digit produced that is greater than or equal to new base.
             std::cerr << RED << "Error: invalid digit " << new_digit;
             std::cerr << " produced when converting to base-" << new_base;
             std::cerr << ".\n" << RESET;
             in_v.~vector();
             exit(EXIT_FAILURE);
         } else if (new_digit < 10) {
+            // Digit has value less than 10.
             new_character = new_digit + '0';
         } else {
+            // Digit has value greater than 10, represent with a letter.
             new_character = new_digit - 10 + 'A';
         }
 
@@ -273,25 +298,38 @@ void take_input_frac(int &num, int &den, int &base) {
     
     // Read the numerator.
     std::cout << "Enter base-10 numerator: ";
-    std::cin >> num;
-    if (num > MAX_INT) {
-        std::cerr << RED << "Error: numerator too large.\n" << RESET;
+    if (std::cin >> num) {
+        // Numerator read successfully.
+        if (num > MAX_INT) {
+            std::cerr << RED << "Error: numerator too large." << RESET << "\n";
+            exit(EXIT_FAILURE);
+        }
+    } else {
+        std::cerr << RED << "Error reading numerator." << RESET << "\n";
         exit(EXIT_FAILURE);
     }
 
     // Read the denominator.
     std::cout << "Enter base-10 denominator: ";
-    std::cin >> den;
-    if (den > MAX_INT || den <= num) {
-        std::cerr << RED << "Error: denominator too large.\n" << RESET;
+    if (std::cin >> den) {
+        if (den > MAX_INT || den <= num) {
+            std::cerr << RED << "Error: denominator too large.\n" << RESET;
+            exit(EXIT_FAILURE);
+        }
+    } else {
+        std::cerr << RED << "Error reading denominator." << RESET << "\n";
         exit(EXIT_FAILURE);
     }
     
     // Read the new base.
     std::cout << "Enter base to convert to (2 - 10): ";
-    std::cin >> base;
-    if (base < 2 || base > 10) {
-        std::cerr << RED << "Error: invalid base.\n" << RESET;
+    if (std::cin >> base) {
+        if (base < 2 || base > 10) {
+            std::cerr << RED << "Error: invalid base.\n" << RESET;
+            exit(EXIT_FAILURE);
+        }
+    } else {
+        std::cerr << RED << "Error reading base." << RESET << "\n";
         exit(EXIT_FAILURE);
     }
 
@@ -308,6 +346,7 @@ range_pair frac_convert(int_vec &num, int_vec &den, int_vec &ints, int base) {
     
     // MAX_ITERATIONS prevents infinite looping.
     while (num.size() < MAX_ITERATIONS && num[num.size() - 1]) {
+        // Multiply numerator by the base.
         product = num[num.size() - 1] * base;
         new_numer = product % den[den.size() - 1];
         new_denom = den[den.size() - 1]; // Same as previous denominator.
@@ -318,12 +357,15 @@ range_pair frac_convert(int_vec &num, int_vec &den, int_vec &ints, int base) {
         ints.push_back(new_integer_part);
     }
 
+    // Search for cycles. If a cycle is found, the expansion is periodic.
     result = find_repeat(num);
     if (result.range_start != -1 && result.range_end != -1) {
+        // Cycle found.
         std::cout << "\nThis base conversion is periodic. The periodic ";
         std::cout << "part will be highlighted in " << BLUE << "blue";
         std::cout << RESET << ".\n";
     } else if (num.size() < MAX_ITERATIONS) {
+        // No cycle found.
         std::cout << "\nThis base conversion is terminating.\n";
     }
 
@@ -338,7 +380,7 @@ range_pair find_repeat(int_vec num) {
     // Two pointers.
     size_t tortoise_index = 1;
     size_t hare_index = 2;
-    //std::cout << "T: " << tortoise_index << ":" << num[tortoise_index] << "   H: " << hare_index << ":" << num[hare_index] << "\n";
+    
     while (tortoise_index < num.size()
     && num[tortoise_index] != num[hare_index]) {
         // Increment tortoise by 1, hare by 2. If hare goes beyond end of the
@@ -348,9 +390,7 @@ range_pair find_repeat(int_vec num) {
         if (hare_index >= num.size()) {
             hare_index %= num.size();
         }
-        //std::cout << "T: " << tortoise_index << ":" << num[tortoise_index] << "   H: " << hare_index << ":" << num[hare_index] << "\n";
     }
-    //std::cout << "\n";
 
     // Tortoise and hare algorithm has finished.
     if (tortoise_index == num.size()) {
