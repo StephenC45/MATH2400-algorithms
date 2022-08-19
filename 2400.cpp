@@ -12,6 +12,8 @@ Last updated 19 August 2022.
 #include "crt.h"
 #include "debug.h"
 #include "euclidean.h"
+#include "linear_diophantine.h"
+
 
 #define FEEDBACK_LINK "https://forms.gle/DpoX1eTry7V9yewV7"
 
@@ -41,7 +43,7 @@ int32_t main(void) {
     } else if (input == "6") {
         return do_cont_frac_convergents();
     } else if (input == "7") {
-        std::cout << "Coming soon!\n"; return 0;
+        return do_solve_lde();
     } else if (input == "8") {
         return do_crt_congruences();
     }
@@ -72,7 +74,7 @@ void print_welcome(void) {
     std::cout << " 4 - Decimal Fraction Base Conversion\n";
     std::cout << " 5 - Fraction to Continued Fraction\n";
     std::cout << " 6 - Fraction to Continued Fraction Convergents\n";
-    std::cout << " 7 - (coming soon) Linear Diophantine Solver\n";
+    std::cout << " 7 - Linear Diophantine Solver\n";
     std::cout << " 8 - Chinese Remainder Theorem (Linear Congruences)\n";
 
     std::cout << "\n";
