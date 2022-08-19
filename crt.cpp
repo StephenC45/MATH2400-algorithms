@@ -6,7 +6,7 @@ Last updated 19 August 2022.
 */
 
 
-#include "CRT.h"
+#include "crt.h"
 
 
 // The main code that runs the CRT for linear congruences.
@@ -15,7 +15,10 @@ int do_crt_congruences(void) {
     print_limitations_crt();
     int congruence_count;
     std::cout << "Enter number of congruences: ";
-    std::cin >> congruence_count;
+    if (!(std::cin >> congruence_count)) {
+        std::cerr << RED << "Error reading congruence count." << RESET << "\n";
+        exit(EXIT_FAILURE);
+    }
 
     // Read constants and moduli from user.
     int_vec moduli;
@@ -26,8 +29,6 @@ int do_crt_congruences(void) {
     int product = calculate_product(moduli);
     if (product < 0) {
         // calculate_product() returned negative value so an error occurred.
-        // moduli.~vector();
-        // constants.~vector();
         return EXIT_FAILURE;
     }
 

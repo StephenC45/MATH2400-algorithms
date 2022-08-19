@@ -8,7 +8,8 @@ Last updated 19 August 2022.
 
 
 #include "base_conversion.h"
-#include "CRT.h"
+#include "continued_fractions.h"
+#include "crt.h"
 #include "debug.h"
 #include "euclidean.h"
 
@@ -36,9 +37,9 @@ int32_t main(void) {
     } else if (input == "4") {
         return do_fraction_base_conversion();
     } else if (input == "5") {
-        std::cout << "Coming soon!\n"; return 0;
+        return do_convert_cont_frac();
     } else if (input == "6") {
-        std::cout << "Coming soon!\n"; return 0;
+        return do_cont_frac_convergents();
     } else if (input == "7") {
         std::cout << "Coming soon!\n"; return 0;
     } else if (input == "8") {
@@ -69,8 +70,8 @@ void print_welcome(void) {
     std::cout << " 2 - Extended Euclidean Algorithm\n";
     std::cout << " 3 - Integer Base Conversion (up to base-36)\n";
     std::cout << " 4 - Decimal Fraction Base Conversion\n";
-    std::cout << " 5 - (coming soon) Fraction to Continued Fraction\n";
-    std::cout << " 6 - (coming soon) Continued Fraction Convergents\n";
+    std::cout << " 5 - Fraction to Continued Fraction\n";
+    std::cout << " 6 - Fraction to Continued Fraction Convergents\n";
     std::cout << " 7 - (coming soon) Linear Diophantine Solver\n";
     std::cout << " 8 - Chinese Remainder Theorem (Linear Congruences)\n";
 
