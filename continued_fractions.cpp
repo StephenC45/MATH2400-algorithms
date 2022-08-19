@@ -59,10 +59,10 @@ int do_cont_frac_convergents(void) {
 
 // Prints limitations for continued fraction conversion.
 void print_limitations_cf_convert(void) {
-    std::cout << "Limitations:\n";
+    std::cerr << "Limitations:\n";
 
-    std::cout << "- Maximum numerator/denominator is 10^8.\n";
-    std::cout << "- Minimum numerator/denominator is 0.\n\n";
+    std::cerr << "- Maximum numerator/denominator is 10^8.\n";
+    std::cerr << "- Minimum numerator/denominator is 0.\n\n";
 
     return;
 }
@@ -70,12 +70,12 @@ void print_limitations_cf_convert(void) {
 
 // Prints limitations for displaying continued fraction convergents.
 void print_limitations_cf_converge(void) {
-    std::cout << "Limitations:\n";
+    std::cerr << "Limitations:\n";
 
-    std::cout << "- Maximum numerator/denominator is 10^8.\n";
-    std::cout << "- Minimum numerator/denominator is 0.\n";
-    std::cout << "- May not print all convergents due to risk of integer ";
-    std::cout << "overflow.\n\n";
+    std::cerr << "- Maximum numerator/denominator is 10^8.\n";
+    std::cerr << "- Minimum numerator/denominator is 0.\n";
+    std::cerr << "- May not print all convergents due to risk of integer ";
+    std::cerr << "overflow.\n\n";
 
     return;
 }
@@ -97,10 +97,10 @@ void auto_cont_frac(int n, int d, int_v &q, int_v &r, int_v &x, int_v &y) {
 // Reads numerator and denominator fron user.
 void take_input_cf_convert(int &num, int &den) {
     // Read numerator.
-    std::cout << "Enter numerator: ";
+    std::cerr << "Enter numerator: ";
     if (std::cin >> num) {
         // Numerator successfully read. Read denominator.
-        std::cout << "Enter denominator: ";
+        std::cerr << "Enter denominator: ";
         if (std::cin >> den) {
             // Do nothing.
         } else {

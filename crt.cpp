@@ -14,7 +14,7 @@ int do_crt_congruences(void) {
     // Read number of congruences to solve.
     print_limitations_crt();
     int congruence_count;
-    std::cout << "Enter number of congruences: ";
+    std::cerr << "Enter number of congruences: ";
     if (!(std::cin >> congruence_count)) {
         std::cerr << RED << "Error reading congruence count." << RESET << "\n";
         exit(EXIT_FAILURE);
@@ -55,13 +55,13 @@ int do_crt_congruences(void) {
 
 // Prints limitations for CRT.
 void print_limitations_crt(void) {
-    std::cout << "Limitations:\n";
+    std::cerr << "Limitations:\n";
 
-    std::cout << "- Only works for systems where all congruences are of the ";
-    std::cout << "form 'x = k (mod m)'.\n";
-    std::cout << "- Limited protection from integer overflow.\n";
-    std::cout << "- Not giving enough input may cause segmentation faults, ";
-    std::cout << "memory leaks, or other memory errors.\n\n";
+    std::cerr << "- Only works for systems where all congruences are of the ";
+    std::cerr << "form 'x = k (mod m)'.\n";
+    std::cerr << "- Limited protection from integer overflow.\n";
+    std::cerr << "- Not giving enough input may cause segmentation faults, ";
+    std::cerr << "memory leaks, or other memory errors.\n\n";
 
     return;
 }
@@ -69,8 +69,8 @@ void print_limitations_crt(void) {
 
 // Reads input for CRT.
 void take_input_crt(int_vec &constants, int_vec &moduli, int count) {
-    std::cout << "Equations must be in the form x = k (mod m).\n";
-    std::cout << "Enter pairs of constants k and moduli m:\n";
+    std::cerr << "Equations must be in the form x = k (mod m).\n";
+    std::cerr << "Enter pairs of constants k and moduli m:\n";
     int modulus;
     int constant;
 

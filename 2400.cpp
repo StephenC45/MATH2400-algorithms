@@ -13,6 +13,7 @@ Last updated 19 August 2022.
 #include "debug.h"
 #include "euclidean.h"
 #include "linear_diophantine.h"
+#include "sieve.h"
 
 
 #define FEEDBACK_LINK "https://forms.gle/DpoX1eTry7V9yewV7"
@@ -28,7 +29,7 @@ int32_t main(void) {
     std::string input;
     print_welcome();
     std::cin >> input;
-    std::cout << "\n";
+    std::cerr << "\n";
 
     if (input == "1") {
         return do_euclidean();
@@ -46,6 +47,8 @@ int32_t main(void) {
         return do_solve_lde();
     } else if (input == "8") {
         return do_crt_congruences();
+    } else if (input == "9") {
+        return do_eratosthenes();
     }
 
     // Since none of the above triggered, input is invalid.
@@ -59,24 +62,25 @@ int32_t main(void) {
 // Prints a welcome message and a menu with options.
 void print_welcome(void) {
     // Print the welcome message.
-    std::cout << "Welcome.\n\nReport errors, suggest features, or give ";
-    std::cout << "using the form here: " << FEEDBACK_LINK << "\n\n";
+    std::cerr << "Welcome.\n\nReport errors, suggest features, or give ";
+    std::cerr << "using the form here: " << FEEDBACK_LINK << "\n\n";
 
-    std::cout << "Be sure to pull from the repository regularly to get the ";
-    std::cout << "latest features, bug fixes, and efficiency improvements.\n\n";
+    std::cerr << "Be sure to pull from the repository regularly to get the ";
+    std::cerr << "latest features, bug fixes, and efficiency improvements.\n\n";
 
     // Print the menu of options.
-    std::cout << "Enter an option below:\n\n";
+    std::cerr << "Enter an option below:\n\n";
 
-    std::cout << " 1 - Euclidean Algorithm\n";
-    std::cout << " 2 - Extended Euclidean Algorithm\n";
-    std::cout << " 3 - Integer Base Conversion (up to base-36)\n";
-    std::cout << " 4 - Decimal Fraction Base Conversion\n";
-    std::cout << " 5 - Fraction to Continued Fraction\n";
-    std::cout << " 6 - Fraction to Continued Fraction Convergents\n";
-    std::cout << " 7 - Linear Diophantine Solver\n";
-    std::cout << " 8 - Chinese Remainder Theorem (Linear Congruences)\n";
+    std::cerr << " 1 - Euclidean Algorithm\n";
+    std::cerr << " 2 - Extended Euclidean Algorithm\n";
+    std::cerr << " 3 - Integer Base Conversion (up to base-36)\n";
+    std::cerr << " 4 - Decimal Fraction Base Conversion\n";
+    std::cerr << " 5 - Fraction to Continued Fraction\n";
+    std::cerr << " 6 - Fraction to Continued Fraction Convergents\n";
+    std::cerr << " 7 - Linear Diophantine Solver\n";
+    std::cerr << " 8 - Chinese Remainder Theorem (Linear Congruences)\n";
+    std::cerr << " 9 - Sieve of Eratosthenes\n";
 
-    std::cout << "\n";
+    std::cerr << "\n";
     return;
 }

@@ -35,9 +35,9 @@ int do_solve_lde(void) {
 
 // Prints limitations for solving linear Diophantine equations.
 void print_limitations_solve_lde(void) {
-    std::cout << "Limitations:\n";
+    std::cerr << "Limitations:\n";
     
-    std::cout << "- Maximum coefficient and constant should be 10^9.\n\n";
+    std::cerr << "- Maximum coefficient and constant should be 10^9.\n\n";
     return;
 }
 
@@ -45,10 +45,10 @@ void print_limitations_solve_lde(void) {
 // Reads user input.
 void take_input_solve_lde(int &x_coeff, int &y_coeff, int &c) {
     // Inform user how to provide input.
-    std::cout << "Solves equations of the form ax + by = c.\n";
+    std::cerr << "Solves equations of the form ax + by = c.\n";
     
     // Read the numerator.
-    std::cout << "Enter coefficient of x: ";
+    std::cerr << "Enter coefficient of x: ";
     if (std::cin >> x_coeff) {
         // x coefficient read successfully.
         if (x_coeff > EEA_MAX_INT) {
@@ -61,7 +61,7 @@ void take_input_solve_lde(int &x_coeff, int &y_coeff, int &c) {
     }
 
     // Read the y coefficient.
-    std::cout << "Enter coefficient of y: ";
+    std::cerr << "Enter coefficient of y: ";
     if (std::cin >> y_coeff) {
         if (y_coeff > EEA_MAX_INT) {
             std::cerr << RED << "Error: input too large.\n" << RESET;
@@ -73,7 +73,7 @@ void take_input_solve_lde(int &x_coeff, int &y_coeff, int &c) {
     }
     
     // Read the constant c.
-    std::cout << "Enter value of c: ";
+    std::cerr << "Enter value of c: ";
     if (std::cin >> c) {
         if (c > EEA_MAX_INT) {
             std::cerr << RED << "Error: input too large.\n" << RESET;

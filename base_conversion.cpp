@@ -17,7 +17,7 @@ Last updated 19 August 2022.
 int do_integer_base_conversion(void) {
     print_limitations_int();
     // Tell user how to input their string.
-    std::cout << "\nCharacters represent the following base-10 numbers:\n";
+    std::cerr << "\nCharacters represent the following base-10 numbers:\n";
     print_characters();
     
     // Read input and separate to digits.
@@ -33,7 +33,8 @@ int do_integer_base_conversion(void) {
     // Convert decimal number to new base.
     int_vec result_v = dec_to_base_digits(decimal_val, new_base);
     str result = digits_to_str(result_v, new_base);
-    std::cout << "\nYour number in base-" << new_base << ": " << result << '\n';
+    std::cout << "\n" << input <<  " in base-" << new_base << ": " << result;
+    std::cout << "\n\n";
     return 0;
 }
 
@@ -92,22 +93,22 @@ int do_fraction_base_conversion(void) {
 
 // Prints limitations for the integer base conversion algorithm.
 void print_limitations_int(void) {
-    std::cout << "Limitations:\n";
+    std::cerr << "Limitations:\n";
     
-    std::cout << "- Maximum string length is " << MAX_LENGTH << " chars ";
-    std::cout << "(configurable in base_conversion.h).\n";
-    std::cout << "- Maximum base of 36.\n\n";
+    std::cerr << "- Maximum string length is " << MAX_LENGTH << " chars ";
+    std::cerr << "(configurable in base_conversion.h).\n";
+    std::cerr << "- Maximum base of 36.\n\n";
     return;
 }
 
 
 // Prints limitations for the decimal fraction base conversion algorithm.
 void print_limitations_frac(void) {
-    std::cout << "Limitations:\n";
+    std::cerr << "Limitations:\n";
     
-    std::cout << "- This program rarely produces the simplest possible ";
-    std::cout << "period.\n- Do your own checking by writing out the periodic ";
-    std::cout << "part a few times to find the simplest possible period.\n\n";
+    std::cerr << "- This program rarely produces the simplest possible ";
+    std::cerr << "period.\n- Do your own checking by writing out the periodic ";
+    std::cerr << "part a few times to find the simplest possible period.\n\n";
     return;
 }
 
@@ -117,25 +118,25 @@ void print_characters() {
     for (int i = 0; i < 26; ++i) {
         if (i > 0 && i % 6 == 0) {
             // Print new line on every 6th entry.
-            std::cout << '\n';
+            std::cerr << '\n';
         } else if (i > 0) {
             // Otherwise, print a tab character to separate entries.
-            std::cout << '\t';
+            std::cerr << '\t';
         }
 
         // Print the value the character represents.
         char ch = 'A' + i;
-        std::cout << ch << " = " << i + 10;
+        std::cerr << ch << " = " << i + 10;
     }
 
-    std::cout << "\n\n";
+    std::cerr << "\n\n";
     return;
 }
 
 
 // Reads and validates input for integer base conversion.
 void take_input_int(str &in, int &old_base, int &new_base, int_vec &digits) {
-    std::cout << "Enter a positive integer: ";
+    std::cerr << "Enter a positive integer: ";
     if (std::cin >> in) {
         // String read successfully. Check that it is a valid string.
         if (in.length() > MAX_LENGTH) {
@@ -148,7 +149,7 @@ void take_input_int(str &in, int &old_base, int &new_base, int_vec &digits) {
         exit(EXIT_FAILURE);
     }
 
-    std::cout << "This number is in base: ";
+    std::cerr << "This number is in base: ";
     if (std::cin >> old_base) {
         // Old base successfully read. Perform input validation.
         if (old_base < 2 || old_base > MAX_BASE) {
@@ -162,7 +163,7 @@ void take_input_int(str &in, int &old_base, int &new_base, int_vec &digits) {
         exit(EXIT_FAILURE);
     }
 
-    std::cout << "Convert to base: ";
+    std::cerr << "Convert to base: ";
     if (std::cin >> new_base) {
         // New base successfully read. Perform input validation.
         if (new_base < 2 || new_base > MAX_BASE) {
@@ -299,11 +300,11 @@ str digits_to_str(int_vec in_v, int new_base) {
 
 // Reads and validates user input for the fraction base conversion algorithm.
 void take_input_frac(int &num, int &den, int &base) {
-    std::cout << "This program terminates after " << MAX_ITERATIONS;
-    std::cout << " iterations.\n\n";
+    std::cerr << "This program terminates after " << MAX_ITERATIONS;
+    std::cerr << " iterations.\n\n";
     
     // Read the numerator.
-    std::cout << "Enter base-10 numerator: ";
+    std::cerr << "Enter base-10 numerator: ";
     if (std::cin >> num) {
         // Numerator read successfully.
         if (num > MAX_INT) {
@@ -316,7 +317,7 @@ void take_input_frac(int &num, int &den, int &base) {
     }
 
     // Read the denominator.
-    std::cout << "Enter base-10 denominator: ";
+    std::cerr << "Enter base-10 denominator: ";
     if (std::cin >> den) {
         if (den > MAX_INT) {
             std::cerr << RED << "Error: denominator too large.\n" << RESET;
@@ -328,7 +329,7 @@ void take_input_frac(int &num, int &den, int &base) {
     }
     
     // Read the new base.
-    std::cout << "Enter base to convert to (2 - 10): ";
+    std::cerr << "Enter base to convert to (2 - 10): ";
     if (std::cin >> base) {
         if (base < 2 || base > 10) {
             std::cerr << RED << "Error: invalid base.\n" << RESET;

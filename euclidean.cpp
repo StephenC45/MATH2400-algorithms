@@ -15,7 +15,7 @@ int do_euclidean(void) {
     // Read two numbers from the user.
     int num1;
     int num2;
-    std::cout << "Enter 2 positive integers (space separated): ";
+    std::cerr << "Enter 2 positive integers (space separated): ";
     if (std::cin >> num1 >> num2) {
         // Numbers successfully read.
     } else {
@@ -118,11 +118,11 @@ void auto_silent_eea(int_v &q, int_v &r, int_v &x, int_v &y, int a, int b) {
 
 // Prints limitations for the Euclidean algorithm.
 void print_limitations_ea(void) {
-    std::cout << "Limitations:\n";
+    std::cerr << "Limitations:\n";
 
-    std::cout << "- Maximum input should be around 9 * 10^18 to avoid integer ";
-    std::cout << "overflow.\n";
-    std::cout << "- No protection from integer overflow.\n\n";
+    std::cerr << "- Maximum input should be around 9 * 10^18 to avoid integer ";
+    std::cerr << "overflow.\n";
+    std::cerr << "- No protection from integer overflow.\n\n";
 
     return;
 }
@@ -130,9 +130,9 @@ void print_limitations_ea(void) {
 
 // Prints limitations for the extended Euclidean algorithm.
 void print_limitations_eea(void) {
-    std::cout << "Limitations:\n";
+    std::cerr << "Limitations:\n";
 
-    std::cout << "- Maximum inputs of 10^9 to avoid integer overflow.\n\n";
+    std::cerr << "- Maximum inputs of 10^9 to avoid integer overflow.\n\n";
 
     return;
 }
@@ -190,7 +190,7 @@ void print_step(int a, int b, int q, int r, int width) {
 // Reads and validates input for the extended Euclidean algorithm.
 void take_input_eea(int &num1, int &num2) {
     // Read input.
-    std::cout << "Enter 2 positive integers (space separated): ";
+    std::cerr << "Enter 2 positive integers (space separated): ";
     
     if (std::cin >> num1 >> num2) {
         // Numbers successfully read.
@@ -210,8 +210,6 @@ void take_input_eea(int &num1, int &num2) {
         exit(EXIT_FAILURE);
     }
 
-    // Swap input order if needed. Uncomment line below if you need this.
-    // swap_if_needed(num1, num2);
     return;
 }
 
