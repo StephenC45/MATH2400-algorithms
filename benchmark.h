@@ -57,7 +57,7 @@ Last upated 23 August 2022.
 
 
 
-#define REFERENCE_TIME 87500000 // 87.5 seconds.
+#define REFERENCE_TIME 80000000 // 80 seconds.
 
 
 // Input generator for the benchmark.
