@@ -14,9 +14,12 @@ Last upated 23 August 2022.
 #ifdef _WIN32
 #include <Windows.h>
 #define SLEEP_COMMAND Sleep(20000)
+#define INPUTFILE_SIZE 1560006262 // Intended size of input file in bytes.
+
 #else
 #include <unistd.h>
 #define SLEEP_COMMAND sleep(20)
+#define INPUTFILE_SIZE 1440005511 // Intended size of input file in bytes.
 #endif
 
 
@@ -52,7 +55,7 @@ Last upated 23 August 2022.
 #define DIOPHANTINE_ITER  12000000
 #define ERATOSTHENES_ITER 1
 
-#define INPUTFILE_SIZE 1560006262 // Intended size of input file in bytes.
+
 
 #define REFERENCE_TIME 87500000 // 87.5 seconds.
 
