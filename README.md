@@ -40,7 +40,7 @@ Compilation command for using ```old_base_conversion.cpp```:
 
 ```g++ -Wall -Wextra -Wshadow -pedantic-errors -std=c++17 -O3 debug.cpp euclidean.cpp old_base_conversion.cpp crt.cpp continued_fractions.cpp linear_diophantine.cpp sieve.cpp 2400.cpp -o 2400.exe```
 
-Benchmark compilation command: ```g++ -Wall -Wextra -Wshadow -pedantic-errors -std=c++17 -O3 debug.cpp euclidean.cpp base_conversion.cpp crt.cpp continued_fractions.cpp linear_diophantine.cpp sieve.cpp benchmark_windows.cpp -o benchmark```
+Benchmark compilation command: ```g++ -Wall -Wextra -Wshadow -pedantic-errors -std=c++17 -O3 debug.cpp euclidean.cpp base_conversion.cpp crt.cpp continued_fractions.cpp linear_diophantine.cpp sieve.cpp benchmark.cpp -o benchmark```
 
 
 # Feedback
