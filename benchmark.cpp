@@ -204,7 +204,7 @@ void print_benchmark_info(void) {
     std::cout << "On most devices, this should finish in 1 to 5 minutes.\n\n";
 
     std::cout << "An Intel Core i5-1135G7 (28 W, 4.2 GHz) should score close ";
-    std::cout << "to 1000."
+    std::cout << "to 1000.";
     std::cout << "\n\n";
 
     // Give user time to read the information.
