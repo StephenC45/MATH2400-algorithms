@@ -107,7 +107,7 @@ int32_t main(void) {
     }
 
     // Run benchmark for sieve of Eratosthenes.
-    std::cout << "Running sieve of Eratosthenes up to 2.5 billion...\n";
+    std::cout << "Running sieve of Eratosthenes up to 3 billion...\n";
     int sieve_input;
     if (input >> sieve_input) {
         benchmark_eratosthenes(sieve_input);
@@ -129,7 +129,9 @@ int32_t main(void) {
 // Input generator for the benchmark.
 void generate_input(void) {
     // Record start time.
-    std::cout << "Generating input (1.56 GB)...\n";
+    std::cout << "Generating input (";
+    std::cout << std::setprecision(3) << INPUTFILE_SIZE / 1000000000.0 << " GB";
+    std::cout << ")\n";
     auto start = std::chrono::high_resolution_clock::now();
     
     // Open a file to store generated input.
@@ -197,15 +199,15 @@ void print_benchmark_info(void) {
     
     std::cout << "Welcome.\n\n";
 
-    std::cout << "This is a single-threaded benchmark that uses 1.56 GB of ";
-    std::cout << "input and will test test your CPU performance in a few ";
+    std::cout << "This is a single-threaded benchmark that uses ";
+    std::cout << std::setprecision(3) << INPUTFILE_SIZE / 1000000000.0;
+    std::cout << " GB of input and will test your CPU performance in a few ";
     std::cout << "mathematical algorithms.\n\n";
 
     std::cout << "On most devices, this should finish in 1 to 5 minutes.\n\n";
 
-    std::cout << "An Intel Core i5-1135G7 (28 W, 4.2 GHz) should score close ";
-    std::cout << "to 1000.";
-    std::cout << "\n\n";
+    std::cout << "Baseline score is 1000, the typical performance of an Intel";
+    std::cout << " Core i5-1135G7 (28 W, 4.2 GHz).\n\n";
 
     // Give user time to read the information.
     SLEEP_COMMAND;

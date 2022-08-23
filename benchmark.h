@@ -14,12 +14,12 @@ Last upated 23 August 2022.
 #ifdef _WIN32
 #include <Windows.h>
 #define SLEEP_COMMAND Sleep(20000)
-#define INPUTFILE_SIZE 1560006262 // Intended size of input file in bytes.
+#define INPUTFILE_SIZE 2298007512 // Intended size of input file in bytes.
 
 #else
 #include <unistd.h>
 #define SLEEP_COMMAND sleep(20)
-#define INPUTFILE_SIZE 1440005511 // Intended size of input file in bytes.
+#define INPUTFILE_SIZE 2160006611 // Intended size of input file in bytes.
 #endif
 
 
@@ -45,19 +45,19 @@ Last upated 23 August 2022.
 #define FRAC_BASE_INPUT    "123456789\n987654321\n2\n"
 #define CONVERGENT_INPUT   "39088169\n63245986\n"
 #define DIOPHANTINE_INPUT  "701408733\n433494437\n123\n"
-#define ERATOSTHENES_INPUT "2500000000\n"
+#define ERATOSTHENES_INPUT "3000000000\n"
 
-#define EUCLID_ITER       12000000 // 1.2 * 10^7
-#define EEA_ITER          12000000
+#define EUCLID_ITER       30000000 // 3 * 10^7
+#define EEA_ITER          12000000 // 1.2 * 10^7
 #define INT_BASE_ITER     12000000 // 1.2 * 10^7
-#define FRAC_BASE_ITER    250
+#define FRAC_BASE_ITER    300
 #define CONVERGENT_ITER   12000000 // 1.2 * 10^7
 #define DIOPHANTINE_ITER  12000000
 #define ERATOSTHENES_ITER 1
 
 
 
-#define REFERENCE_TIME 80000000 // 80 seconds.
+#define REFERENCE_TIME 77500000 // 77.5 seconds.
 
 
 // Input generator for the benchmark.
