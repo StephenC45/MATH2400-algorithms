@@ -15,5 +15,10 @@ SUPPORTING_FILES=debug.cpp euclidean.cpp base_conversion.cpp crt.cpp continued_f
 
 #------------------------------------------------------------------------------#
 
-all: Makefile 2400.cpp $(SUPPORTING_FILES)
+all: program benchmark
+
+program: Makefile 2400.cpp $(SUPPORTING_FILES)
 	$(CPP) $(WARN_FLAGS) $(OTHER_FLAGS) $(SUPPORTING_FILES) 2400.cpp -o 2400
+
+benchmark: Makefile benchmark.cpp benchmark.h $(SUPPORTING_FILES)
+	$(CPP) $(WARN_FLAGS) $(OTHER_FLAGS) $(SUPPORTING_FILES) benchmark.cpp -o benchmark
