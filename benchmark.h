@@ -2,7 +2,7 @@
 Header file for benchmark functions.
 
 Written by Stephen Chuang.
-Last upated 23 August 2022.
+Last upated 25 August 2022.
 */
 
 
@@ -54,8 +54,6 @@ Last upated 23 August 2022.
 #define CONVERGENT_ITER   12000000 // 1.2 * 10^7
 #define DIOPHANTINE_ITER  12000000
 #define ERATOSTHENES_ITER 1
-
-
 
 #define REFERENCE_TIME 77500000 // 77.5 seconds.
 

@@ -1,8 +1,8 @@
 /*
-Header implementation of benchmark functions.
+Implementation of benchmark functions.
 
 Written by Stephen Chuang.
-Last upated 23 August 2022.
+Last upated 25 August 2022.
 */
 
 
@@ -40,6 +40,8 @@ int32_t main(void) {
             benchmark_euclidean(a, b);
         } else {
             print_input_error_message();
+            input.close();
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -52,6 +54,8 @@ int32_t main(void) {
             benchmark_eea(a, b);
         } else {
             print_input_error_message();
+            input.close();
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -65,6 +69,8 @@ int32_t main(void) {
             benchmark_int_base(input_int, old_base, new_base);
         } else {
             print_input_error_message();
+            input.close();
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -78,6 +84,8 @@ int32_t main(void) {
             benchmark_frac_base(num, den, base);
         } else {
             print_input_error_message();
+            input.close();
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -90,6 +98,8 @@ int32_t main(void) {
             benchmark_convergents(numerator, denominator);
         } else {
             print_input_error_message();
+            input.close();
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -103,6 +113,8 @@ int32_t main(void) {
             benchmark_diophantine(x_coeff, y_coeff, constant);
         } else {
             print_input_error_message();
+            input.close();
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -113,6 +125,8 @@ int32_t main(void) {
         benchmark_eratosthenes(sieve_input);
     } else {
         print_input_error_message();
+        input.close();
+        exit(EXIT_FAILURE);
     }
 
     // Record finishing time and show results.
@@ -381,7 +395,7 @@ void benchmark_eratosthenes(int input) {
 void print_input_error_message(void) {
     std::cerr << RED << "Error: invalid input. This is most likely caused by ";
     std::cerr << "a malformed benchmark_input.txt file." << RESET << "\n";
-    exit(EXIT_FAILURE);
+    return;
 }
 
 
