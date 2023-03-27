@@ -32,7 +32,7 @@ typedef struct range_pair {
 #define MAX_BASE        36
 #define MAX_INT         1000000000 // 10^9
 #define LARGE_THRESHOLD 100000     // 10^5
-#define MAX_ITERATIONS  2500000   // You may change this. O(n) time.
+#define MAX_ITERATIONS  2500000    // You may change this. O(n) time.
 #define OLD_MAX_ITER    25000      // You may change this. O(n^2) time.
 
 #define BINARY      2
