@@ -2,7 +2,7 @@
 Header file for base conversion functions.
 
 Written by Stephen Chuang.
-Last updated 27 March 2023.
+Last updated 28 March 2023.
 */
 
 
