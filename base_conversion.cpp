@@ -2,11 +2,11 @@
 Implementation of base conversion functions.
 
 This is the newer version where decimal fraction base conversion is fast enough
-to perform 2.5 million iterations (instead of the old 25,000) but almost never
-produces a result with the simplest possible period.
+to perform 2.5 million iterations (instead of the old 25,000) but may not 
+produce the result with the shortest period.
 
 Written by Stephen Chuang.
-Last updated 19 August 2022.
+Last updated 27 March 2023.
 */
 
 
@@ -60,21 +60,18 @@ int do_fraction_base_conversion(void) {
     // Vectors to store the integer and fractional parts after multiplying by
     // the base.
     int_vec numerators;
-    int_vec denominators;
     int_vec integer_parts;
     numerators.reserve(MAX_ITERATIONS);
-    denominators.reserve(MAX_ITERATIONS);
     integer_parts.reserve(MAX_ITERATIONS);
 
     // Perform first iteration.
     int product = numerator * new_base;
     numerators.push_back(product % denominator);
-    denominators.push_back(denominator);
     integer_parts.push_back(product / denominator);
 
     // Finish the rest of the base conversion.
     range_pair range;
-    range = frac_convert(numerators, denominators, integer_parts, new_base);
+    range = frac_convert(numerators, denominator, integer_parts, new_base);
     if (range.range_start == -1 || range.range_end == -1) {
         periodic = false;
     }
@@ -345,38 +342,39 @@ void take_input_frac(int &num, int &den, int &base) {
 
 
 // Performs the base conversion algorithm on fractional parts.
-range_pair frac_convert(int_vec &num, int_vec &den, int_vec &ints, int base) {
+range_pair frac_convert(int_vec &num, int den, int_vec &ints, int base) {
     range_pair result;
     int product;
     int new_numer;
-    int new_denom;
-    
-    // MAX_ITERATIONS prevents infinite looping.
-    while (num.size() < MAX_ITERATIONS && num[num.size() - 1]) {
-        // Multiply numerator by the base.
-        product = num[num.size() - 1] * base;
-        new_numer = product % den[den.size() - 1];
-        new_denom = den[den.size() - 1]; // Same as previous denominator.
-        int new_integer_part = product / new_denom;
 
-        num.push_back(new_numer);
-        den.push_back(new_denom); // Same as previous denominator.
-        ints.push_back(new_integer_part);
+    if (den < LARGE_THRESHOLD) {
+        return frac_convert_set(num, den, ints, base);
+    } else {
+        // MAX_ITERATIONS prevents infinite looping.
+        while (num.size() < MAX_ITERATIONS && num[num.size() - 1]) {
+            // Multiply numerator by the base.
+            product = num[num.size() - 1] * base;
+            new_numer = product % den;
+            int new_integer_part = product / den;
+
+            num.push_back(new_numer);
+            ints.push_back(new_integer_part);
+        }
+
+        // Search for cycles. If a cycle is found, the expansion is periodic.
+        result = find_repeat(num);
+        if (result.range_start != -1 && result.range_end != -1) {
+            // Cycle found.
+            std::cout << "\nThis base conversion is periodic. The periodic ";
+            std::cout << "part will be highlighted in " << BLUE << "blue";
+            std::cout << RESET << ".\n";
+        } else if (num.size() < MAX_ITERATIONS) {
+            // No cycle found.
+            std::cout << "\nThis base conversion is terminating.\n";
+        }
+
+        return result;
     }
-
-    // Search for cycles. If a cycle is found, the expansion is periodic.
-    result = find_repeat(num);
-    if (result.range_start != -1 && result.range_end != -1) {
-        // Cycle found.
-        std::cout << "\nThis base conversion is periodic. The periodic ";
-        std::cout << "part will be highlighted in " << BLUE << "blue";
-        std::cout << RESET << ".\n";
-    } else if (num.size() < MAX_ITERATIONS) {
-        // No cycle found.
-        std::cout << "\nThis base conversion is terminating.\n";
-    }
-
-    return result;
 }
 
 
@@ -458,6 +456,68 @@ size_t second_repeat(int test_num, int_vec values) {
     }
 
     return index;
+}
+
+
+// Fraction base conversion, but using std::unordered_set to track repeated 
+// numerators. Faster with smaller input.
+range_pair frac_convert_set(int_vec &num, int den, int_vec &ints, int base) {
+    std::unordered_set<int> seen_numerators;
+    seen_numerators.emplace(num[0]);
+
+    range_pair result = {-1, -1};
+    int product;
+    int new_numer;
+    
+    // MAX_ITERATIONS prevents infinite looping.
+    while (num.size() < MAX_ITERATIONS && num[num.size() - 1]) {
+        // Multiply numerator by the base.
+        product = num[num.size() - 1] * base;
+        new_numer = product % den;
+        int new_integer_part = product / den;
+
+        num.push_back(new_numer);
+        ints.push_back(new_integer_part);
+
+        if (seen_numerators.find(new_numer) != seen_numerators.end()) {
+            find_first_two(result, num, new_numer);
+            break;
+        } else {
+            seen_numerators.emplace(new_numer);
+        }
+    }
+
+    if (result.range_start != -1 && result.range_end != -1) {
+        // Cycle found.
+        std::cout << "\nThis base conversion is periodic. The periodic ";
+        std::cout << "part will be highlighted in " << BLUE << "blue";
+        std::cout << RESET << ".\n";
+    } else if (num.size() < MAX_ITERATIONS) {
+        // No cycle found.
+        std::cout << "\nThis base conversion is terminating.\n";
+    }
+
+    return result;
+}
+
+
+// Finds the indices of the first two instances of key in num.
+void find_first_two(range_pair &rp, int_vec num, int key) {
+    int first_index = -1;
+    int second_index = -1;
+
+    for (size_t index = 0; index < num.size(); ++index) {
+        if (first_index == -1 && num[index] == key) {
+            first_index = index;
+        } else if (first_index != -1 && num[index] == key) {
+            second_index = index;
+            rp.range_start = first_index;
+            rp.range_end = second_index;
+            return;
+        }
+    }
+
+    return;
 }
 
 

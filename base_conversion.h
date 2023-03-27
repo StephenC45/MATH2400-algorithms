@@ -2,7 +2,7 @@
 Header file for base conversion functions.
 
 Written by Stephen Chuang.
-Last updated 19 August 2022.
+Last updated 27 March 2023.
 */
 
 
@@ -14,6 +14,7 @@ Last updated 19 August 2022.
 #include <cmath>
 #include <iostream>
 #include <vector>
+#include <unordered_set>
 #include "debug.h"
 
 
@@ -27,11 +28,12 @@ typedef struct range_pair {
 #define int_vec std::vector<long long>
 #define str std::string
 
-#define MAX_LENGTH     12
-#define MAX_BASE       36
-#define MAX_INT        1000000000 // 10^9
-#define MAX_ITERATIONS 2500000    // You may change this. O(n) time.
-#define OLD_MAX_ITER   25000      // You may change this. O(n^2) time.
+#define MAX_LENGTH      12
+#define MAX_BASE        36
+#define MAX_INT         1000000000 // 10^9
+#define LARGE_THRESHOLD 100000     // 10^5
+#define MAX_ITERATIONS  2500000   // You may change this. O(n) time.
+#define OLD_MAX_ITER    25000      // You may change this. O(n^2) time.
 
 #define BINARY      2
 #define OCTAL       8
@@ -93,11 +95,7 @@ void take_input_frac(int &num, int &den, int &base);
 
 
 // Performs the base conversion algorithm on fractional parts.
-range_pair frac_convert(int_vec &num, int_vec &den, int_vec &ints, int base);
-
-
-// The old version of the fractional base conversion algorithm.
-range_pair old_f_convert(int_vec &num, int_vec &den, int_vec &ints, int base);
+range_pair frac_convert(int_vec &num, int den, int_vec &ints, int base);
 
 
 // Finds if there are any repeats of the first numerator using the tortoise and
@@ -114,9 +112,13 @@ range_pair subsequence_repeat(int_vec sequence, size_t end);
 size_t second_repeat(int test_num, int_vec values);
 
 
-// From the old version. Checks if a numerator-denominator pair has appeared 
-// before. Returns true if they are found, or false otherwise.
-int old_is_repeat(int test_num, int test_den, int_vec num, int_vec den);
+// Fraction base conversion, but using std::unordered_set to track repeated 
+// numerators. Faster with smaller input.
+range_pair frac_convert_set(int_vec &num, int den, int_vec &ints, int base);
+
+
+// Finds the indices of the first two instances of key in num.
+void find_first_two(range_pair &rp, int_vec num, int key);
 
 
 // Prints the integer parts obtained from the fractional base conversion
